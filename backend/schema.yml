@@ -1,0 +1,682 @@
+openapi: 3.0.3
+info:
+  title: WOOD CARVO Furniture Showcase API
+  version: 1.0.0
+  description: Public showcase & inquiry API for WOOD CARVO furniture workshop in
+    Addis Ababa, Ethiopia. Supports English, Amharic, and Afaan Oromo resolved text.
+paths:
+  /api/v1/categories:
+    get:
+      operationId: categories_list
+      description: Returns all active categories ordered by workshop display sequence.
+      summary: List active furniture categories
+      parameters:
+      - in: query
+        name: lang
+        schema:
+          type: string
+          default: en
+        description: 'Language code: en, am, or om'
+      tags:
+      - categories
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'
+          description: ''
+  /api/v1/clicks:
+    post:
+      operationId: clicks_create
+      description: Logs a click on WhatsApp, Telegram, or Phone Call. Throttled to
+        30 requests/min per IP. Stores zero personal data.
+      summary: Record customer inquiry action
+      tags:
+      - clicks
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContactClick'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ContactClick'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ContactClick'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+          description: ''
+  /api/v1/gallery:
+    get:
+      operationId: gallery_list
+      description: Workshop photography and finished bespoke projects.
+      summary: List portfolio gallery items
+      parameters:
+      - in: query
+        name: category
+        schema:
+          type: string
+        description: Optional category slug
+      - in: query
+        name: lang
+        schema:
+          type: string
+          default: en
+        description: 'Language code: en, am, om'
+      tags:
+      - gallery
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GalleryItem'
+          description: ''
+  /api/v1/products:
+    get:
+      operationId: products_list
+      description: Search, filter, and paginate published workshop furniture items.
+      summary: Browse published furniture products
+      parameters:
+      - in: query
+        name: availability
+        schema:
+          type: string
+        description: READY, MADE_TO_ORDER, or SOLD
+      - in: query
+        name: category
+        schema:
+          type: string
+        description: Category slug
+      - in: query
+        name: featured
+        schema:
+          type: boolean
+        description: Filter only featured items
+      - in: query
+        name: lang
+        schema:
+          type: string
+          default: en
+        description: 'Language code: en, am, om'
+      - in: query
+        name: page
+        schema:
+          type: integer
+          default: 1
+        description: Page number
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: q
+        schema:
+          type: string
+        description: Search query across title (all languages) and code
+      - in: query
+        name: sort
+        schema:
+          type: string
+          default: newest
+        description: 'Sort order: newest or featured'
+      tags:
+      - products
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedProductListList'
+          description: ''
+  /api/v1/products/{slug}:
+    get:
+      operationId: products_retrieve
+      description: Returns detailed specs, responsive image variants, and related
+        products.
+      summary: Retrieve single furniture item by slug
+      parameters:
+      - in: query
+        name: lang
+        schema:
+          type: string
+          default: en
+        description: 'Language code: en, am, om'
+      - in: path
+        name: slug
+        schema:
+          type: string
+        required: true
+      tags:
+      - products
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductDetail'
+          description: ''
+  /api/v1/settings:
+    get:
+      operationId: settings_retrieve
+      description: Returns phone numbers, WhatsApp, Telegram, working hours, and about
+        text.
+      summary: Retrieve workshop settings and contacts
+      parameters:
+      - in: query
+        name: lang
+        schema:
+          type: string
+          default: en
+        description: 'Language code: en, am, or om'
+      tags:
+      - settings
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SiteSettings'
+          description: ''
+  /api/v1/sitemap-data:
+    get:
+      operationId: sitemap_data_retrieve
+      description: Returns all public slugs and timestamps for search engine sitemaps.
+      summary: Sitemap and SEO indexing data
+      tags:
+      - sitemap-data
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  locales:
+                    type: array
+                    items:
+                      type: string
+                  products:
+                    type: array
+                    items:
+                      type: object
+                  categories:
+                    type: array
+                    items:
+                      type: object
+                  static_pages:
+                    type: array
+                    items:
+                      type: string
+          description: ''
+components:
+  schemas:
+    AvailabilityEnum:
+      enum:
+      - READY
+      - MADE_TO_ORDER
+      - SOLD
+      type: string
+      description: |-
+        * `READY` - Ready to Deliver
+        * `MADE_TO_ORDER` - Made to Order
+        * `SOLD` - Previously Made / Sold
+    Category:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          readOnly: true
+        slug:
+          oneOf:
+          - type: string
+            pattern: ^[-\w]+$
+            maxLength: 160
+          - type: string
+            maxLength: 0
+        description:
+          type: string
+          readOnly: true
+        image:
+          type: string
+          nullable: true
+          readOnly: true
+        sort_order:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        products_count:
+          type: integer
+          readOnly: true
+      required:
+      - description
+      - id
+      - image
+      - name
+      - products_count
+    ChannelEnum:
+      enum:
+      - whatsapp
+      - telegram
+      - phone
+      type: string
+      description: |-
+        * `whatsapp` - WhatsApp
+        * `telegram` - Telegram
+        * `phone` - Phone Call
+    ContactClick:
+      type: object
+      properties:
+        product_id:
+          type: integer
+          nullable: true
+        product_code:
+          type: string
+        channel:
+          $ref: '#/components/schemas/ChannelEnum'
+        locale:
+          type: string
+          maxLength: 10
+        page_path:
+          type: string
+          maxLength: 255
+      required:
+      - channel
+    GalleryItem:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        title:
+          type: string
+          readOnly: true
+        image:
+          type: string
+          readOnly: true
+        category:
+          type: object
+          additionalProperties:
+            oneOf:
+            - type: string
+            - type: integer
+          nullable: true
+          readOnly: true
+        sort_order:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        variants:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+      required:
+      - category
+      - id
+      - image
+      - title
+      - variants
+    PaginatedProductListList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductList'
+    PriceModeEnum:
+      enum:
+      - FIXED
+      - FROM
+      - ASK
+      type: string
+      description: |-
+        * `FIXED` - Fixed Price
+        * `FROM` - Starting From
+        * `ASK` - Ask for Price
+    ProductDetail:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        code:
+          type: string
+          description: Customer facing identifier e.g. WC-001
+          maxLength: 30
+        slug:
+          oneOf:
+          - type: string
+            pattern: ^[-\w]+$
+            maxLength: 255
+          - type: string
+            maxLength: 0
+        name:
+          type: string
+          readOnly: true
+        category:
+          type: object
+          additionalProperties:
+            oneOf:
+            - type: string
+            - type: integer
+          readOnly: true
+        availability:
+          $ref: '#/components/schemas/AvailabilityEnum'
+        availability_label:
+          type: string
+          readOnly: true
+        lead_time:
+          type: string
+          readOnly: true
+        price_mode:
+          $ref: '#/components/schemas/PriceModeEnum'
+        price_etb:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+          nullable: true
+          description: Price in Ethiopian Birr (ETB). Ignored if price_mode is ASK.
+        formatted_price:
+          type: string
+          readOnly: true
+        featured:
+          type: boolean
+        thumbnail_url:
+          type: string
+          nullable: true
+          readOnly: true
+        is_customizable:
+          type: boolean
+          description: Allows customer to request custom dimensions/materials
+        published_at:
+          type: string
+          format: date-time
+          nullable: true
+        description:
+          type: string
+          readOnly: true
+        material:
+          type: string
+          readOnly: true
+        color:
+          type: string
+          readOnly: true
+        dimensions:
+          type: string
+          description: Free text dimensions e.g. 210cm W x 90cm D x 75cm H
+          maxLength: 150
+        seo_title:
+          type: string
+          readOnly: true
+        seo_description:
+          type: string
+          readOnly: true
+        images:
+          type: array
+          items:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+        related_products:
+          type: array
+          items:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - availability_label
+      - category
+      - color
+      - created_at
+      - description
+      - formatted_price
+      - id
+      - images
+      - lead_time
+      - material
+      - name
+      - related_products
+      - seo_description
+      - seo_title
+      - thumbnail_url
+    ProductList:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        code:
+          type: string
+          description: Customer facing identifier e.g. WC-001
+          maxLength: 30
+        slug:
+          oneOf:
+          - type: string
+            pattern: ^[-\w]+$
+            maxLength: 255
+          - type: string
+            maxLength: 0
+        name:
+          type: string
+          readOnly: true
+        category:
+          type: object
+          additionalProperties:
+            oneOf:
+            - type: string
+            - type: integer
+          readOnly: true
+        availability:
+          $ref: '#/components/schemas/AvailabilityEnum'
+        availability_label:
+          type: string
+          readOnly: true
+        lead_time:
+          type: string
+          readOnly: true
+        price_mode:
+          $ref: '#/components/schemas/PriceModeEnum'
+        price_etb:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+          nullable: true
+          description: Price in Ethiopian Birr (ETB). Ignored if price_mode is ASK.
+        formatted_price:
+          type: string
+          readOnly: true
+        featured:
+          type: boolean
+        thumbnail_url:
+          type: string
+          nullable: true
+          readOnly: true
+        is_customizable:
+          type: boolean
+          description: Allows customer to request custom dimensions/materials
+        published_at:
+          type: string
+          format: date-time
+          nullable: true
+      required:
+      - availability_label
+      - category
+      - formatted_price
+      - id
+      - lead_time
+      - name
+      - thumbnail_url
+    SiteSettings:
+      type: object
+      properties:
+        whatsapp_number:
+          type: string
+          description: 'Format: +2519XXXXXXXX (international format without dashes
+            or spaces for wa.me)'
+          maxLength: 50
+        telegram_username:
+          type: string
+          description: Telegram username without @ (e.g. woodcarvo)
+          maxLength: 100
+        phone_number:
+          type: string
+          description: Direct phone line for voice calls
+          maxLength: 50
+        address:
+          type: string
+          readOnly: true
+        google_maps_url:
+          description: Direct Google Maps pin or search link
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
+        latitude:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,6})?$
+          nullable: true
+        longitude:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,6})?$
+          nullable: true
+        working_hours:
+          type: string
+          readOnly: true
+        instagram:
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
+        facebook:
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
+        tiktok:
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
+        hero_image:
+          type: string
+          nullable: true
+          readOnly: true
+        hero_image_variants:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        showroom_photo:
+          type: string
+          nullable: true
+          readOnly: true
+        showroom_photo_variants:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        about_text:
+          type: string
+          readOnly: true
+        custom_furniture_text:
+          type: string
+          readOnly: true
+      required:
+      - about_text
+      - address
+      - custom_furniture_text
+      - hero_image
+      - hero_image_variants
+      - showroom_photo
+      - showroom_photo_variants
+      - working_hours
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid

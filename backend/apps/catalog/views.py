@@ -136,6 +136,17 @@ class GalleryListAPIView(generics.ListAPIView):
 @extend_schema(
     summary="Sitemap and SEO indexing data",
     description="Returns all public slugs and timestamps for search engine sitemaps.",
+    responses={
+        200: {
+            "type": "object",
+            "properties": {
+                "locales": {"type": "array", "items": {"type": "string"}},
+                "products": {"type": "array", "items": {"type": "object"}},
+                "categories": {"type": "array", "items": {"type": "object"}},
+                "static_pages": {"type": "array", "items": {"type": "string"}},
+            },
+        }
+    },
 )
 class SitemapDataAPIView(APIView):
     def get(self, request):

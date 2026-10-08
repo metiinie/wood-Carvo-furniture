@@ -15,8 +15,11 @@ from .serializers import SiteSettingsSerializer
     parameters=[
         OpenApiParameter(name="lang", type=str, description="Language code: en, am, or om", default="en"),
     ],
+    responses={200: SiteSettingsSerializer},
 )
 class SiteSettingsAPIView(APIView):
+    serializer_class = SiteSettingsSerializer
+
     def get(self, request):
         settings_obj = SiteSettings.load()
         serializer = SiteSettingsSerializer(settings_obj, context={"request": request})
