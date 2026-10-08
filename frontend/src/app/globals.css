@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --wood-dark: #3A2921;
+  --wood-walnut: #6B4B38;
+  --wood-warm: #D9B77A;
+  --wood-cream: #F6F1E7;
+  --wood-text: #211814;
+}
+
+body {
+  background-color: var(--wood-cream);
+  color: var(--wood-text);
+  font-family: var(--font-sans), sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Ensure accessible touch target size on mobile */
+a, button {
+  min-height: 44px;
+  min-width: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #F6F1E7;
+}
+::-webkit-scrollbar-thumb {
+  background: #6B4B38;
+  border-radius: 4px;
+}
