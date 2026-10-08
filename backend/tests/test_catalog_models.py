@@ -2,9 +2,6 @@
 import pytest
 from apps.catalog.models import Category, Product, ProductImage
 from apps.site.models import SiteSettings
-from apps.tracking.ContactClick import (  # noqa: F401
-    ContactClick,
-) if False else None
 from apps.tracking.models import ContactClick
 
 

@@ -121,6 +121,25 @@ LANGUAGES = [
     ("om", "Afaan Oromoo"),
 ]
 
+# Ensure Django localization recognizes Ethiopian languages (am & om)
+import django.conf.locale
+
+EXTRA_LANG_INFO = {
+    "am": {
+        "bidi": False,
+        "code": "am",
+        "name": "Amharic",
+        "name_local": "አማርኛ",
+    },
+    "om": {
+        "bidi": False,
+        "code": "om",
+        "name": "Oromo",
+        "name_local": "Afaan Oromoo",
+    },
+}
+django.conf.locale.LANG_INFO.update(EXTRA_LANG_INFO)
+
 MODELTRANSLATION_DEFAULT_LANGUAGE = "en"
 MODELTRANSLATION_LANGUAGES = ("en", "am", "om")
 MODELTRANSLATION_FALLBACK_LANGUAGES = {
