@@ -106,7 +106,7 @@ class ProductAdmin(ModelAdmin):
                 "fields": (
                     ("code", "status"),
                     ("category", "featured"),
-                    ("availability", "lead_time_en"),
+                    "availability",
                     ("price_mode", "price_etb"),
                     "slug",
                 )

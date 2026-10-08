@@ -37,7 +37,7 @@ class Command(BaseCommand):
         content_types = ContentType.objects.get_for_models(*app_models).values()
         permissions = Permission.objects.filter(content_type__in=content_types)
         owner_group.permissions.set(permissions)
-        self.stdout.write(self.style.SUCCESS("✓ Configured 'Owner' user role and permissions."))
+        self.stdout.write(self.style.SUCCESS("[OK] Configured 'Owner' user role and permissions."))
 
         # 2. Setup Site Settings singleton
         settings_obj = SiteSettings.load()
@@ -89,7 +89,7 @@ class Command(BaseCommand):
             settings_obj.showroom_photo.save("showroom.jpg", showroom_file, save=False)
 
         settings_obj.save()
-        self.stdout.write(self.style.SUCCESS("✓ Seeded SiteSettings."))
+        self.stdout.write(self.style.SUCCESS("[OK] Seeded SiteSettings."))
 
         # 3. Setup Categories
         categories_data = [
@@ -137,7 +137,7 @@ class Command(BaseCommand):
                 cat_img = create_placeholder_image(f"CATEGORY: {cat.name_en.upper()}", width=600, height=400)
                 cat.image.save(f"{slug}.jpg", cat_img, save=True)
             cat_map[slug] = cat
-        self.stdout.write(self.style.SUCCESS(f"✓ Seeded {len(cat_map)} Categories."))
+        self.stdout.write(self.style.SUCCESS(f"[OK] Seeded {len(cat_map)} Categories."))
 
         # 4. Setup 6 Sample Products
         products_data = [
@@ -329,7 +329,7 @@ class Command(BaseCommand):
                     alt_text_om=f"{prod.name_om} - Baldhina Ogummaa",
                 ).image.save(f"{prod.code.lower()}_detail.jpg", detail_file, save=True)
 
-        self.stdout.write(self.style.SUCCESS(f"✓ Seeded {len(products_data)} Sample Products with Photos."))
+        self.stdout.write(self.style.SUCCESS(f"[OK] Seeded {len(products_data)} Sample Products with Photos."))
 
         # 5. Setup Gallery Items
         if GalleryItem.objects.count() == 0:
@@ -349,6 +349,6 @@ class Command(BaseCommand):
                     is_active=True,
                 )
                 gi.image.save(f"gallery_{idx+1}.jpg", g_img, save=True)
-            self.stdout.write(self.style.SUCCESS("✓ Seeded Gallery Items."))
+            self.stdout.write(self.style.SUCCESS("[OK] Seeded Gallery Items."))
 
-        self.stdout.write(self.style.SUCCESS("🎉 WOOD CARVO seed completed successfully!"))
+        self.stdout.write(self.style.SUCCESS("[SUCCESS] WOOD CARVO seed completed successfully!"))
