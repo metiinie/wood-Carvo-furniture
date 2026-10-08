@@ -1,10 +1,13 @@
 """Tests for Phase 3 Owner Tools: Dashboard metrics, Quick Add flow, and Telegram broadcast."""
+
 from unittest.mock import patch
+
 import pytest
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import Client
+
 from apps.adminpanel.dashboard import get_dashboard_data
 from apps.catalog.models import Category, Product
 from apps.tracking.models import ContactClick
@@ -75,7 +78,7 @@ def test_dashboard_metrics(owner_client):
     assert b"Workshop Quick Add" in res.content
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_quick_add_product_with_3_photos_and_telegram(owner_client):
     """
     CRITICAL ACCEPTANCE CRITERION:
@@ -156,6 +159,9 @@ def test_admin_repost_to_telegram_action(owner_client):
 @pytest.mark.django_db
 def test_owner_group_permissions(db):
     """Verify Owner role permissions access catalog and settings."""
+    from apps.catalog.utils import setup_owner_group
+
+    setup_owner_group()
     owner_group = Group.objects.get(name="Owner")
     perm_codenames = owner_group.permissions.values_list("codename", flat=True)
 

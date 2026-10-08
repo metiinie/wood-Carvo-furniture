@@ -72,3 +72,19 @@ def get_image_variants(
         "large": url,
         "og": url,
     }
+
+
+def setup_owner_group():
+    """Ensure Owner user group exists with all catalog, gallery, and settings permissions."""
+    from django.contrib.auth.models import Group, Permission
+    from django.contrib.contenttypes.models import ContentType
+
+    from apps.catalog.models import Category, GalleryItem, Product, ProductImage
+    from apps.site.models import SiteSettings
+
+    owner_group, _ = Group.objects.get_or_create(name="Owner")
+    app_models = [Category, Product, ProductImage, GalleryItem, SiteSettings]
+    content_types = ContentType.objects.get_for_models(*app_models).values()
+    permissions = Permission.objects.filter(content_type__in=content_types)
+    owner_group.permissions.set(permissions)
+    return owner_group

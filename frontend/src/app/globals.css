@@ -6,8 +6,13 @@
   --wood-dark: #3A2921;
   --wood-walnut: #6B4B38;
   --wood-warm: #D9B77A;
-  --wood-cream: #F6F1E7;
+  --wood-cream: #FAF6F0;
+  --wood-surface: #F5EFEB;
   --wood-text: #211814;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
@@ -15,25 +20,54 @@ body {
   color: var(--wood-text);
   font-family: var(--font-sans), sans-serif;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Ensure accessible touch target size on mobile */
-a, button {
+/* Ethiopic font styles */
+.font-ethiopic {
+  font-family: var(--font-ethiopic), "Noto Sans Ethiopic", system-ui, sans-serif;
+  line-height: 1.6;
+}
+
+/* Touch targets for mobile actions */
+.touch-target {
   min-height: 44px;
   min-width: 44px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
 }
 
-/* Custom scrollbar */
+/* Mobile bottom spacing to prevent sticky contact bar overlap */
+.pb-mobile-bar {
+  padding-bottom: 5.5rem;
+}
+
+@media (min-width: 768px) {
+  .pb-mobile-bar {
+    padding-bottom: 0;
+  }
+}
+
+/* Safe area bottom padding for iPhone home indicator */
+.safe-area-bottom {
+  padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+}
+
+/* Custom Wood selection highlight */
+::selection {
+  background-color: #D9B77A;
+  color: #3A2921;
+}
+
+/* Custom Wood Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #F6F1E7;
+  background: #FAF6F0;
 }
 ::-webkit-scrollbar-thumb {
   background: #6B4B38;
   border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #3A2921;
 }

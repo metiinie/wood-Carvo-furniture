@@ -1,11 +1,14 @@
 """Views for admin custom features, including mobile-optimized Quick Add."""
+
 from __future__ import annotations
 
 import logging
+
 from django.contrib.admin.views.decorators import staff_member_required
 from django.db import transaction
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render
+
 from apps.catalog.models import Category, Product, ProductImage
 from apps.integrations.revalidate import trigger_revalidation
 from apps.integrations.telegram import post_product_to_telegram
@@ -32,7 +35,9 @@ def quick_add_view(request):
 
         # Basic validation
         if not name:
-            return JsonResponse({"success": False, "error": "Product name is required."}, status=400)
+            return JsonResponse(
+                {"success": False, "error": "Product name is required."}, status=400
+            )
         if not category_id:
             return JsonResponse({"success": False, "error": "Category is required."}, status=400)
 
@@ -46,7 +51,9 @@ def quick_add_view(request):
             except ValueError:
                 price_etb = None
 
-        target_status = Product.Status.PUBLISHED if action_btn == "publish" else Product.Status.DRAFT
+        target_status = (
+            Product.Status.PUBLISHED if action_btn == "publish" else Product.Status.DRAFT
+        )
 
         # Handle photos
         photos = request.FILES.getlist("photos")
@@ -96,16 +103,18 @@ def quick_add_view(request):
             product.status,
         )
 
-        return JsonResponse({
-            "success": True,
-            "product_id": product.pk,
-            "code": product.code,
-            "name": product.name,
-            "slug": product.slug,
-            "status": product.status,
-            "formatted_price": product.formatted_price,
-            "photos_count": len(photos),
-        })
+        return JsonResponse(
+            {
+                "success": True,
+                "product_id": product.pk,
+                "code": product.code,
+                "name": product.name,
+                "slug": product.slug,
+                "status": product.status,
+                "formatted_price": product.formatted_price,
+                "photos_count": len(photos),
+            }
+        )
 
     # GET request: render the form
     categories = Category.objects.filter(is_active=True).order_by("sort_order")

@@ -2,9 +2,11 @@
 
 from django.contrib import admin
 from django.utils import timezone
-from django.utils.html import format_html
+from django.utils.html import format_html, mark_safe
 from unfold.admin import ModelAdmin, TabularInline
 from unfold.decorators import action, display
+
+from apps.integrations.telegram import post_product_to_telegram
 
 from .models import Category, GalleryItem, Product, ProductImage
 
@@ -180,7 +182,7 @@ class ProductAdmin(ModelAdmin):
                 '<img src="{}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.2);" />',
                 img.image.url,
             )
-        return format_html(
+        return mark_safe(
             '<div style="width: 50px; height: 50px; background: #3A2921; color: #D9B77A; display: flex; align-items: center; justify-content: center; border-radius: 8px; font-size: 10px; font-weight: bold;">NO PIC</div>'
         )
 
@@ -231,8 +233,6 @@ class ProductAdmin(ModelAdmin):
 
     @action(description="📢 Re-post to Telegram channel")
     def repost_to_telegram(self, request, queryset):
-        from apps.integrations.telegram import post_product_to_telegram
-
         count = 0
         for prod in queryset:
             post_product_to_telegram(prod.pk)

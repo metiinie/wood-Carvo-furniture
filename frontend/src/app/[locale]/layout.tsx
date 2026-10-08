@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { locales, Locale } from "@/i18n";
+import StickyContactBar from "@/components/StickyContactBar";
 import "../globals.css";
 
 const inter = Inter({
@@ -72,11 +73,15 @@ export default async function LocaleLayout({
   return (
     <html
       lang={locale}
-      className={`${inter.variable} ${playfair.variable} ${isAmharic ? notoEthiopic.variable : ""}`}
+      dir="ltr"
+      className={`${inter.variable} ${playfair.variable} ${notoEthiopic.variable}`}
     >
-      <body className={isAmharic ? "font-ethiopic" : "font-sans"}>
+      <body className={`bg-wood-cream text-wood-text ${isAmharic ? "font-ethiopic" : "font-sans"}`}>
         <NextIntlClientProvider locale={locale} messages={messages}>
-          {children}
+          <div className="min-h-screen flex flex-col pb-mobile-bar">
+            {children}
+          </div>
+          <StickyContactBar />
         </NextIntlClientProvider>
       </body>
     </html>

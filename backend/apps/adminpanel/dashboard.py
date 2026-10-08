@@ -1,10 +1,13 @@
 """Dashboard metrics calculation for Django Unfold admin."""
+
 from __future__ import annotations
 
 from datetime import timedelta
 from typing import Any
+
 from django.db.models import Count
 from django.utils import timezone
+
 from apps.catalog.models import Product
 from apps.tracking.models import ContactClick
 
@@ -46,31 +49,43 @@ def get_dashboard_data() -> dict[str, Any]:
 
     top_products = []
     for prod in top_products_qs:
-        top_products.append({
-            "id": prod.pk,
-            "code": prod.code,
-            "name": prod.name_en or prod.name_am or prod.name,
-            "category": prod.category.name_en,
-            "clicks": prod.click_count,
-            "availability": prod.get_availability_display(),
-            "formatted_price": prod.formatted_price,
-            "thumbnail": prod.primary_image.image.url if prod.primary_image and prod.primary_image.image else None,
-        })
-
-    # If no clicked products exist yet in new database, show newest 5
-    if not top_products:
-        recent_qs = Product.objects.filter(status=Product.Status.PUBLISHED).select_related("category").prefetch_related("images")[:5]
-        for prod in recent_qs:
-            top_products.append({
+        top_products.append(
+            {
                 "id": prod.pk,
                 "code": prod.code,
                 "name": prod.name_en or prod.name_am or prod.name,
                 "category": prod.category.name_en,
-                "clicks": 0,
+                "clicks": prod.click_count,
                 "availability": prod.get_availability_display(),
                 "formatted_price": prod.formatted_price,
-                "thumbnail": prod.primary_image.image.url if prod.primary_image and prod.primary_image.image else None,
-            })
+                "thumbnail": prod.primary_image.image.url
+                if prod.primary_image and prod.primary_image.image
+                else None,
+            }
+        )
+
+    # If no clicked products exist yet in new database, show newest 5
+    if not top_products:
+        recent_qs = (
+            Product.objects.filter(status=Product.Status.PUBLISHED)
+            .select_related("category")
+            .prefetch_related("images")[:5]
+        )
+        for prod in recent_qs:
+            top_products.append(
+                {
+                    "id": prod.pk,
+                    "code": prod.code,
+                    "name": prod.name_en or prod.name_am or prod.name,
+                    "category": prod.category.name_en,
+                    "clicks": 0,
+                    "availability": prod.get_availability_display(),
+                    "formatted_price": prod.formatted_price,
+                    "thumbnail": prod.primary_image.image.url
+                    if prod.primary_image and prod.primary_image.image
+                    else None,
+                }
+            )
 
     return {
         "status_counts": {

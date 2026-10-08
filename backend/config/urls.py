@@ -21,10 +21,10 @@ urlpatterns = [
     # Health checks (both root and api/v1 paths supported)
     path("healthz", healthz_view, name="root-healthz"),
     path("api/v1/healthz", healthz_view, name="api-healthz"),
-    # Non-default admin panel path
-    path("manage/", admin.site.urls),
     # Quick Add & Admin custom views
     path("manage/quick-add/", include("apps.adminpanel.urls")),
+    # Non-default admin panel path
+    path("manage/", admin.site.urls),
     # Versioned Public API
     path("api/v1/", include("config.api_urls")),
     # OpenAPI Documentation
