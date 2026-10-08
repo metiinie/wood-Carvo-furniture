@@ -44,6 +44,19 @@ class Command(BaseCommand):
         owner_group.permissions.set(permissions)
         self.stdout.write(self.style.SUCCESS("[OK] Configured 'Owner' user role and permissions."))
 
+        # Setup primary admin user: rushdseid@gmail.com
+        from django.contrib.auth import get_user_model
+        User = get_user_model()
+        admin_user, created = User.objects.get_or_create(
+            username="rushdseid@gmail.com",
+            defaults={"email": "rushdseid@gmail.com", "is_staff": True, "is_superuser": True},
+        )
+        admin_user.set_password("Rushd6685")
+        admin_user.is_staff = True
+        admin_user.is_superuser = True
+        admin_user.save()
+        self.stdout.write(self.style.SUCCESS("[OK] Admin user rushdseid@gmail.com configured."))
+
         # 2. Setup Site Settings singleton
         settings_obj = SiteSettings.load()
         settings_obj.phone_number = "+251911223344"
