@@ -2,6 +2,7 @@
 
 import pytest
 from django.test import Client
+
 from apps.catalog.models import Category, Product
 from apps.tracking.models import ContactClick
 
