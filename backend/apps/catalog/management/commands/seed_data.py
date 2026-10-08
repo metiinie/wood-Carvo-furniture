@@ -1,15 +1,20 @@
 """Seed database with categories, products, gallery items, site settings, and Owner group."""
+
 import io
-from PIL import Image, ImageDraw
+
 from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
 from django.core.files.base import ContentFile
 from django.core.management.base import BaseCommand
+from PIL import Image, ImageDraw
+
 from apps.catalog.models import Category, GalleryItem, Product, ProductImage
 from apps.site.models import SiteSettings
 
 
-def create_placeholder_image(text: str, bg_color=(58, 41, 33), text_color=(217, 183, 122), width=800, height=600) -> ContentFile:
+def create_placeholder_image(
+    text: str, bg_color=(58, 41, 33), text_color=(217, 183, 122), width=800, height=600
+) -> ContentFile:
     """Generates an in-memory JPEG placeholder image with warm wood branding."""
     img = Image.new("RGB", (width, height), color=bg_color)
     draw = ImageDraw.Draw(img)
@@ -48,7 +53,9 @@ class Command(BaseCommand):
 
         settings_obj.address_en = "Bole Sub-city, Near Atlas Hotel, Addis Ababa, Ethiopia"
         settings_obj.address_am = "ቦሌ ክፍለ ከተማ፣ አትላስ ሆቴል አካባቢ፣ አዲስ አበባ፣ ኢትዮጵያ"
-        settings_obj.address_om = "Kutaa Magaalaa Boolee, Naannoo Hoteela Atlaas, Finfinnee, Itoophiyaa"
+        settings_obj.address_om = (
+            "Kutaa Magaalaa Boolee, Naannoo Hoteela Atlaas, Finfinnee, Itoophiyaa"
+        )
 
         settings_obj.working_hours_en = "Monday - Saturday: 8:30 AM - 6:30 PM | Sunday: Closed"
         settings_obj.working_hours_am = "ከሰኞ እስከ ቅዳሜ፡ ከጠዋቱ 2:30 - ከሰዓት 12:30 | እሁድ፡ ዝግ ነው"
@@ -82,10 +89,14 @@ class Command(BaseCommand):
         )
 
         if not settings_obj.hero_image:
-            hero_file = create_placeholder_image("HERO: WOOD CARVO WORKSHOP", bg_color=(45, 30, 22), width=1200, height=800)
+            hero_file = create_placeholder_image(
+                "HERO: WOOD CARVO WORKSHOP", bg_color=(45, 30, 22), width=1200, height=800
+            )
             settings_obj.hero_image.save("workshop_hero.jpg", hero_file, save=False)
         if not settings_obj.showroom_photo:
-            showroom_file = create_placeholder_image("SHOWROOM ADDIS ABABA", bg_color=(60, 42, 30), width=1000, height=700)
+            showroom_file = create_placeholder_image(
+                "SHOWROOM ADDIS ABABA", bg_color=(60, 42, 30), width=1000, height=700
+            )
             settings_obj.showroom_photo.save("showroom.jpg", showroom_file, save=False)
 
         settings_obj.save()
@@ -134,7 +145,9 @@ class Command(BaseCommand):
                     setattr(cat, k, v)
                 cat.save()
             if not cat.image:
-                cat_img = create_placeholder_image(f"CATEGORY: {cat.name_en.upper()}", width=600, height=400)
+                cat_img = create_placeholder_image(
+                    f"CATEGORY: {cat.name_en.upper()}", width=600, height=400
+                )
                 cat.image.save(f"{slug}.jpg", cat_img, save=True)
             cat_map[slug] = cat
         self.stdout.write(self.style.SUCCESS(f"[OK] Seeded {len(cat_map)} Categories."))
@@ -309,7 +322,9 @@ class Command(BaseCommand):
 
             # Attach images if none exist
             if not prod.images.exists():
-                primary_file = create_placeholder_image(f"{prod.code}: {prod.name_en[:24]}", width=900, height=700)
+                primary_file = create_placeholder_image(
+                    f"{prod.code}: {prod.name_en[:24]}", width=900, height=700
+                )
                 ProductImage.objects.create(
                     product=prod,
                     is_primary=True,
@@ -319,7 +334,9 @@ class Command(BaseCommand):
                     alt_text_om=f"{prod.name_om} - Agarsiisa Guddaa",
                 ).image.save(f"{prod.code.lower()}_primary.jpg", primary_file, save=True)
 
-                detail_file = create_placeholder_image(f"{prod.code} DETAIL CRAFT", width=900, height=700)
+                detail_file = create_placeholder_image(
+                    f"{prod.code} DETAIL CRAFT", width=900, height=700
+                )
                 ProductImage.objects.create(
                     product=prod,
                     is_primary=False,
@@ -329,7 +346,9 @@ class Command(BaseCommand):
                     alt_text_om=f"{prod.name_om} - Baldhina Ogummaa",
                 ).image.save(f"{prod.code.lower()}_detail.jpg", detail_file, save=True)
 
-        self.stdout.write(self.style.SUCCESS(f"[OK] Seeded {len(products_data)} Sample Products with Photos."))
+        self.stdout.write(
+            self.style.SUCCESS(f"[OK] Seeded {len(products_data)} Sample Products with Photos.")
+        )
 
         # 5. Setup Gallery Items
         if GalleryItem.objects.count() == 0:
@@ -339,16 +358,18 @@ class Command(BaseCommand):
                 ("Precision Custom Bed Assembly in Workshop", cat_map["bedroom"]),
             ]
             for idx, (title, category) in enumerate(gallery_data):
-                g_img = create_placeholder_image(f"WORKSHOP: {title.upper()}", width=800, height=600)
+                g_img = create_placeholder_image(
+                    f"WORKSHOP: {title.upper()}", width=800, height=600
+                )
                 gi = GalleryItem.objects.create(
                     title_en=title,
-                    title_am=f"የእጅ ጥበብ ስራ #{idx+1}",
-                    title_om=f"Hojii Ogummaa Harkaa #{idx+1}",
+                    title_am=f"የእጅ ጥበብ ስራ #{idx + 1}",
+                    title_om=f"Hojii Ogummaa Harkaa #{idx + 1}",
                     category=category,
                     sort_order=idx + 1,
                     is_active=True,
                 )
-                gi.image.save(f"gallery_{idx+1}.jpg", g_img, save=True)
+                gi.image.save(f"gallery_{idx + 1}.jpg", g_img, save=True)
             self.stdout.write(self.style.SUCCESS("[OK] Seeded Gallery Items."))
 
         self.stdout.write(self.style.SUCCESS("[SUCCESS] WOOD CARVO seed completed successfully!"))

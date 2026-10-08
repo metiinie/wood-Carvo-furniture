@@ -1,4 +1,5 @@
 """Django Unfold admin configuration for catalog app."""
+
 from django.contrib import admin
 from django.utils import timezone
 from django.utils.html import format_html
@@ -229,7 +230,15 @@ class ProductAdmin(ModelAdmin):
 
 @admin.register(GalleryItem)
 class GalleryItemAdmin(ModelAdmin):
-    list_display = ("preview", "title_en", "title_am", "category", "sort_order", "is_active", "created_at")
+    list_display = (
+        "preview",
+        "title_en",
+        "title_am",
+        "category",
+        "sort_order",
+        "is_active",
+        "created_at",
+    )
     list_editable = ("sort_order", "is_active")
     list_filter = ("is_active", "category")
     search_fields = ("title_en", "title_am", "title_om")

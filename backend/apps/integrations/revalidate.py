@@ -1,11 +1,13 @@
 """Next.js Edge ISR on-demand revalidation dispatcher."""
+
 from __future__ import annotations
 
 import logging
 import threading
-from typing import Sequence
-from django.conf import settings
+from collections.abc import Sequence
+
 import requests
+from django.conf import settings
 
 logger = logging.getLogger(__name__)
 

@@ -1,5 +1,7 @@
 """Modeltranslation registrations for catalog app."""
+
 from modeltranslation.translator import TranslationOptions, register
+
 from .models import Category, GalleryItem, Product, ProductImage
 
 

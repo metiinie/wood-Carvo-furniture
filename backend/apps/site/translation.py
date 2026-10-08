@@ -1,5 +1,7 @@
 """Modeltranslation registration for site app."""
+
 from modeltranslation.translator import TranslationOptions, register
+
 from .models import SiteSettings
 
 

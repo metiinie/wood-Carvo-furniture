@@ -1,11 +1,13 @@
 """Telegram channel broadcast integration for new product launches."""
+
 from __future__ import annotations
 
 import logging
 import threading
+
+import requests
 from django.conf import settings
 from django.utils import timezone
-import requests
 
 logger = logging.getLogger(__name__)
 
@@ -47,12 +49,14 @@ def _do_post_product(product_id: int) -> None:
     if product.material:
         caption_lines.append(f"🪵 *Material:* {product.material}")
 
-    caption_lines.extend([
-        "",
-        f"🔗 [View Details on Website]({product_link})",
-        "📞 *Order via WhatsApp / Call:* +251 911 22 33 44",
-        "#WOODCARVO #AddisAbaba #Furniture #Handcrafted",
-    ])
+    caption_lines.extend(
+        [
+            "",
+            f"🔗 [View Details on Website]({product_link})",
+            "📞 *Order via WhatsApp / Call:* +251 911 22 33 44",
+            "#WOODCARVO #AddisAbaba #Furniture #Handcrafted",
+        ]
+    )
     caption = "\n".join(caption_lines)
 
     # Collect images (up to 4)
@@ -115,7 +119,11 @@ def _do_post_product(product_id: int) -> None:
                 telegram_posted_at=timezone.now(),
                 telegram_message_id=msg_id,
             )
-            logger.info("Successfully posted Product #%s (%s) to Telegram channel.", product.pk, product.code)
+            logger.info(
+                "Successfully posted Product #%s (%s) to Telegram channel.",
+                product.pk,
+                product.code,
+            )
         else:
             logger.warning("Telegram API error posting Product #%s: %s", product_id, data)
 

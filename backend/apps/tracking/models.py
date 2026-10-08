@@ -1,4 +1,5 @@
 """Inquiry click analytics model (privacy friendly - NO IP or personal data)."""
+
 from django.db import models
 
 

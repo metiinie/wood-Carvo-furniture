@@ -1,4 +1,5 @@
 """Catalog data models for WOOD CARVO."""
+
 from __future__ import annotations
 
 from django.core.exceptions import ValidationError
@@ -70,7 +71,9 @@ class Product(models.Model):
     name = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, unique=True, blank=True, allow_unicode=True)
     description = models.TextField(blank=True)
-    material = models.CharField(max_length=200, blank=True, help_text="e.g. Solid Mahogany, Oak veneer")
+    material = models.CharField(
+        max_length=200, blank=True, help_text="e.g. Solid Mahogany, Oak veneer"
+    )
     color = models.CharField(max_length=100, blank=True, help_text="e.g. Dark Walnut, Natural Teak")
     dimensions = models.CharField(
         max_length=150,
@@ -161,7 +164,9 @@ class Product(models.Model):
                 or getattr(self, "name_om", None)
             )
             if not has_name:
-                raise ValidationError("A published product must have a name in at least one language.")
+                raise ValidationError(
+                    "A published product must have a name in at least one language."
+                )
 
     def save(self, *args, **kwargs) -> None:
         # Generate sequential code if empty: WC-001, WC-002...
@@ -170,7 +175,12 @@ class Product(models.Model):
 
         # Generate unique slug if empty
         if not self.slug:
-            name_val = self.name or getattr(self, "name_en", None) or getattr(self, "name_am", None) or self.code
+            name_val = (
+                self.name
+                or getattr(self, "name_en", None)
+                or getattr(self, "name_am", None)
+                or self.code
+            )
             base_slug = slugify(name_val, allow_unicode=True) or f"product-{self.code.lower()}"
             candidate = base_slug
             counter = 1
@@ -226,9 +236,9 @@ class ProductImage(models.Model):
     def save(self, *args, **kwargs) -> None:
         # Ensure only one primary image per product
         if self.is_primary:
-            ProductImage.objects.filter(product=self.product, is_primary=True).exclude(pk=self.pk).update(
-                is_primary=False
-            )
+            ProductImage.objects.filter(product=self.product, is_primary=True).exclude(
+                pk=self.pk
+            ).update(is_primary=False)
         super().save(*args, **kwargs)
 
 

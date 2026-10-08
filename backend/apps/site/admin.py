@@ -1,4 +1,5 @@
 """Django Unfold admin configuration for SiteSettings singleton."""
+
 from django.contrib import admin
 from unfold.admin import ModelAdmin
 
@@ -31,17 +32,13 @@ class SiteSettingsAdmin(ModelAdmin):
         (
             "Social Media Links",
             {
-                "fields": (
-                    ("instagram", "facebook", "tiktok"),
-                ),
+                "fields": (("instagram", "facebook", "tiktok"),),
             },
         ),
         (
             "Showroom & Hero Images",
             {
-                "fields": (
-                    ("hero_image", "showroom_photo"),
-                ),
+                "fields": (("hero_image", "showroom_photo"),),
             },
         ),
         (

@@ -1,7 +1,9 @@
 """Django base settings for WOOD CARVO backend."""
+
 from pathlib import Path
-from decouple import Csv, config
+
 import dj_database_url
+from decouple import Csv, config
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
@@ -147,7 +149,9 @@ if CLOUDINARY_URL:
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # CORS
-CORS_ORIGIN_ENV = config("CORS_ORIGIN", default="http://localhost:3000,http://127.0.0.1:3000", cast=Csv())
+CORS_ORIGIN_ENV = config(
+    "CORS_ORIGIN", default="http://localhost:3000,http://127.0.0.1:3000", cast=Csv()
+)
 CORS_ALLOWED_ORIGINS = list(CORS_ORIGIN_ENV)
 CORS_ALLOW_CREDENTIALS = True
 
@@ -200,10 +204,10 @@ UNFOLD = {
             "300": "217 119 6",
             "400": "180 83 9",
             "500": "146 64 14",
-            "600": "107 75 56",   # Walnut #6B4B38
+            "600": "107 75 56",  # Walnut #6B4B38
             "700": "74 44 29",
-            "800": "58 41 33",    # Dark Wood #3A2921
-            "900": "33 24 20",    # Dark Text #211814
+            "800": "58 41 33",  # Dark Wood #3A2921
+            "900": "33 24 20",  # Dark Text #211814
             "950": "24 18 15",
         },
     },
