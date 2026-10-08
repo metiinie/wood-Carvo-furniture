@@ -1,7 +1,9 @@
 """Serializers for catalog API with multilingual resolution and image variants."""
+
 from __future__ import annotations
 
 from rest_framework import serializers
+
 from .models import Category, GalleryItem, Product, ProductImage
 from .utils import get_image_variants, resolve_translated_field
 

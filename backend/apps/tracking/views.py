@@ -1,4 +1,5 @@
 """API views for logging customer inquiry clicks with rate limiting."""
+
 from __future__ import annotations
 
 from drf_spectacular.utils import extend_schema
@@ -6,6 +7,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.throttling import AnonRateThrottle
 from rest_framework.views import APIView
+
 from .serializers import ContactClickSerializer
 
 

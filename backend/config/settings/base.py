@@ -3,6 +3,7 @@
 from pathlib import Path
 
 import dj_database_url
+import django.conf.locale
 from decouple import Csv, config
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -122,8 +123,6 @@ LANGUAGES = [
 ]
 
 # Ensure Django localization recognizes Ethiopian languages (am & om)
-import django.conf.locale
-
 EXTRA_LANG_INFO = {
     "am": {
         "bidi": False,
@@ -215,6 +214,7 @@ UNFOLD = {
     "SITE_SUBHEADER": "Addis Ababa • Handcrafted Furniture Management",
     "SITE_URL": "/",
     "THEME": "dark",
+    "DASHBOARD_CALLBACK": "apps.adminpanel.dashboard.dashboard_callback",
     "COLORS": {
         "primary": {
             "50": "254 243 199",

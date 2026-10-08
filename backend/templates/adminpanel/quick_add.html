@@ -1,7 +1,413 @@
-{% extends "admin/base_site.html" %}
+{% extends "admin/base.html" %}
+{% load i18n %}
+
+{% block title %}Quick Add Furniture | {{ site_title|default:'WOOD CARVO Admin' }}{% endblock %}
+
 {% block content %}
-<div class="p-4 max-w-xl mx-auto">
-    <h1 class="text-2xl font-bold mb-4">Quick Add Product (Under 60s)</h1>
-    <p class="text-sm text-gray-400">Mobile-optimized quick add will be fully configured in Phase 3.</p>
+<div class="max-w-xl mx-auto py-2 px-3 sm:px-0">
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-5">
+        <div>
+            <div class="flex items-center gap-2">
+                <span class="text-2xl">⚡</span>
+                <h1 class="text-2xl font-bold text-white tracking-tight">Quick Add Product</h1>
+            </div>
+            <p class="text-xs text-stone-400 mt-1">Mobile workshop publishing. Live in under 60 seconds.</p>
+        </div>
+        <a href="/manage/" class="text-xs text-stone-400 hover:text-white px-3 py-2 rounded-lg bg-stone-900 border border-stone-800">
+            ← Dashboard
+        </a>
+    </div>
+
+    <!-- Quick Add Form -->
+    <form id="quickAddForm" class="space-y-5" novalidate>
+        {% csrf_token %}
+
+        <!-- 1. Photo Picker & Gallery -->
+        <div class="bg-stone-900/90 border border-stone-800 rounded-2xl p-4 shadow-sm">
+            <label class="block text-xs font-bold uppercase tracking-wider text-amber-400 mb-2">
+                Photos (Primary is first photo) *
+            </label>
+
+            <input type="file" id="photoInput" accept="image/*" multiple capture="environment" class="hidden" />
+
+            <button type="button" id="selectPhotosBtn" class="w-full flex flex-col items-center justify-center p-6 border-2 border-dashed border-amber-600/50 hover:border-amber-400 rounded-xl bg-stone-950/60 transition-all cursor-pointer min-h-[100px]">
+                <span class="text-3xl mb-1">📸</span>
+                <span class="text-sm font-bold text-amber-200">Tap to Take Photo or Pick Gallery</span>
+                <span class="text-[11px] text-stone-400 mt-0.5">Auto-compressed before upload (&lt; 1600px, ~0.8 quality)</span>
+            </button>
+
+            <!-- Previews Grid -->
+            <div id="previewGrid" class="grid grid-cols-3 gap-2.5 mt-3 empty:hidden"></div>
+            <p id="photoCountNotice" class="text-[11px] text-stone-400 mt-2 text-right hidden">
+                <span id="photoCountVal">0</span> photos ready
+            </p>
+        </div>
+
+        <!-- 2. Furniture Details -->
+        <div class="bg-stone-900/90 border border-stone-800 rounded-2xl p-4 space-y-4 shadow-sm">
+            <div>
+                <label for="name" class="block text-xs font-bold uppercase tracking-wider text-stone-300 mb-1.5">
+                    Furniture Name *
+                </label>
+                <input type="text" id="name" name="name" required placeholder="e.g. Bespoke Walnut Coffee Table"
+                    class="w-full bg-stone-950 border border-stone-800 focus:border-amber-500 rounded-xl px-4 py-3 text-sm text-white placeholder-stone-600 outline-none transition min-h-[46px]" />
+            </div>
+
+            <div>
+                <label for="name_am" class="block text-xs font-bold uppercase tracking-wider text-stone-300 mb-1.5">
+                    Amharic Name (አማርኛ - Optional)
+                </label>
+                <input type="text" id="name_am" name="name_am" placeholder="ለምሳሌ፡ ልዩ የዎልናት ሳሎን ጠረጴዛ"
+                    class="w-full bg-stone-950 border border-stone-800 focus:border-amber-500 rounded-xl px-4 py-3 text-sm text-white placeholder-stone-600 outline-none transition min-h-[46px]" />
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                    <label for="category_id" class="block text-xs font-bold uppercase tracking-wider text-stone-300 mb-1.5">
+                        Category *
+                    </label>
+                    <select id="category_id" name="category_id" required
+                        class="w-full bg-stone-950 border border-stone-800 focus:border-amber-500 rounded-xl px-3 py-3 text-sm text-white outline-none transition min-h-[46px]">
+                        <option value="">Select Category...</option>
+                        {% for cat in categories %}
+                        <option value="{{ cat.id }}">{{ cat.name_en }} ({{ cat.name_am }})</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div>
+                    <label for="availability" class="block text-xs font-bold uppercase tracking-wider text-stone-300 mb-1.5">
+                        Availability *
+                    </label>
+                    <select id="availability" name="availability"
+                        class="w-full bg-stone-950 border border-stone-800 focus:border-amber-500 rounded-xl px-3 py-3 text-sm text-white outline-none transition min-h-[46px]">
+                        {% for val, label in availabilities %}
+                        <option value="{{ val }}" {% if val == 'READY' %}selected{% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <!-- Lead time (Shown for Made to order) -->
+            <div id="leadTimeGroup">
+                <label for="lead_time" class="block text-xs font-bold uppercase tracking-wider text-stone-300 mb-1.5">
+                    Production Lead Time (e.g. 2-3 weeks)
+                </label>
+                <input type="text" id="lead_time" name="lead_time" placeholder="e.g. 2-3 weeks"
+                    class="w-full bg-stone-950 border border-stone-800 focus:border-amber-500 rounded-xl px-4 py-3 text-sm text-white placeholder-stone-600 outline-none transition min-h-[46px]" />
+            </div>
+        </div>
+
+        <!-- 3. Price Settings -->
+        <div class="bg-stone-900/90 border border-stone-800 rounded-2xl p-4 space-y-4 shadow-sm">
+            <label class="block text-xs font-bold uppercase tracking-wider text-stone-300 mb-1.5">
+                Price Mode
+            </label>
+            <div class="grid grid-cols-3 gap-2">
+                <label class="flex items-center justify-center p-3 rounded-xl border border-stone-800 bg-stone-950 cursor-pointer has-[:checked]:border-amber-500 has-[:checked]:bg-amber-950/40 min-h-[46px]">
+                    <input type="radio" name="price_mode" value="FIXED" class="hidden" checked />
+                    <span class="text-xs font-semibold text-white">Fixed Price</span>
+                </label>
+                <label class="flex items-center justify-center p-3 rounded-xl border border-stone-800 bg-stone-950 cursor-pointer has-[:checked]:border-amber-500 has-[:checked]:bg-amber-950/40 min-h-[46px]">
+                    <input type="radio" name="price_mode" value="FROM" class="hidden" />
+                    <span class="text-xs font-semibold text-white">Starting From</span>
+                </label>
+                <label class="flex items-center justify-center p-3 rounded-xl border border-stone-800 bg-stone-950 cursor-pointer has-[:checked]:border-amber-500 has-[:checked]:bg-amber-950/40 min-h-[46px]">
+                    <input type="radio" name="price_mode" value="ASK" class="hidden" />
+                    <span class="text-xs font-semibold text-white">Ask for Price</span>
+                </label>
+            </div>
+
+            <div id="priceEtbGroup">
+                <label for="price_etb" class="block text-xs font-bold uppercase tracking-wider text-stone-300 mb-1.5">
+                    Price in ETB (Ethiopian Birr)
+                </label>
+                <div class="relative">
+                    <span class="absolute left-4 top-3.5 text-xs font-bold text-amber-400">ETB</span>
+                    <input type="number" id="price_etb" name="price_etb" placeholder="45000" min="0" step="500"
+                        class="w-full bg-stone-950 border border-stone-800 focus:border-amber-500 rounded-xl pl-14 pr-4 py-3 text-base font-bold text-white placeholder-stone-700 outline-none transition min-h-[46px]" />
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. Telegram Broadcast Toggle -->
+        <div class="bg-stone-900/90 border border-stone-800 rounded-2xl p-4 flex items-center justify-between shadow-sm">
+            <div class="flex items-center gap-3">
+                <span class="text-2xl">✈️</span>
+                <div>
+                    <span class="text-xs font-bold text-white block">Post to Telegram Channel</span>
+                    <span class="text-[11px] text-stone-400">Automatically broadcast photos and specs to channel</span>
+                </div>
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" id="post_to_telegram" name="post_to_telegram" checked class="sr-only peer" />
+                <div class="w-11 h-6 bg-stone-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-600"></div>
+            </label>
+        </div>
+
+        <!-- Progress Indicator -->
+        <div id="progressContainer" class="hidden bg-stone-950 border border-stone-800 rounded-xl p-4 space-y-2">
+            <div class="flex justify-between text-xs font-semibold text-amber-300">
+                <span id="progressStatus">Compressing photos...</span>
+                <span id="progressPercent">0%</span>
+            </div>
+            <div class="w-full bg-stone-800 h-2.5 rounded-full overflow-hidden">
+                <div id="progressBar" class="bg-gradient-to-r from-amber-500 to-emerald-500 h-full w-0 transition-all duration-300"></div>
+            </div>
+        </div>
+
+        <!-- Error Alert -->
+        <div id="errorAlert" class="hidden p-4 rounded-xl bg-red-950/80 border border-red-800 text-red-200 text-xs font-medium"></div>
+
+        <!-- 5. Big Action Buttons -->
+        <div class="pt-2 space-y-3">
+            <button type="button" id="publishBtn" class="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white font-bold text-base shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer min-h-[52px]">
+                <span>🚀 Publish Now (Make Live)</span>
+            </button>
+
+            <button type="button" id="draftBtn" class="w-full py-3.5 px-6 rounded-2xl bg-stone-800 hover:bg-stone-700 text-stone-300 font-semibold text-sm transition-all flex items-center justify-center gap-2 cursor-pointer min-h-[46px]">
+                <span>💾 Save as Draft</span>
+            </button>
+        </div>
+    </form>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-stone-900 border border-amber-600/40 rounded-2xl max-w-sm w-full p-6 text-center shadow-2xl space-y-5 animate-in fade-in zoom-in-95">
+            <div class="w-16 h-16 rounded-full bg-emerald-950 border border-emerald-500/40 text-emerald-400 text-3xl flex items-center justify-center mx-auto shadow-inner">
+                ✓
+            </div>
+            <div>
+                <span id="successCode" class="text-xs font-mono font-bold text-amber-400 uppercase tracking-widest block mb-1">WC-001</span>
+                <h3 id="successName" class="text-xl font-bold text-white">Product is Live!</h3>
+                <p id="successMessage" class="text-xs text-stone-400 mt-2">Successfully published to the website and edge cache updated.</p>
+            </div>
+            <div class="space-y-2 pt-2">
+                <a id="viewLiveLink" href="#" target="_blank" class="block w-full py-3 px-4 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 font-bold text-xs tracking-wider uppercase transition shadow min-h-[44px] flex items-center justify-center">
+                    👁 View on Website
+                </a>
+                <a id="editAdminLink" href="#" class="block w-full py-3 px-4 rounded-xl bg-stone-800 hover:bg-stone-700 text-white font-semibold text-xs transition min-h-[44px] flex items-center justify-center">
+                    ✏ Edit in Admin
+                </a>
+                <button type="button" id="addAnotherBtn" class="block w-full py-2.5 px-4 rounded-xl text-stone-400 hover:text-white text-xs font-medium min-h-[40px]">
+                    + Add Another Product
+                </button>
+            </div>
+        </div>
+    </div>
 </div>
+
+<script>
+(() => {
+    const photoInput = document.getElementById('photoInput');
+    const selectPhotosBtn = document.getElementById('selectPhotosBtn');
+    const previewGrid = document.getElementById('previewGrid');
+    const photoCountNotice = document.getElementById('photoCountNotice');
+    const photoCountVal = document.getElementById('photoCountVal');
+    const priceModeRadios = document.querySelectorAll('input[name="price_mode"]');
+    const priceEtbGroup = document.getElementById('priceEtbGroup');
+    const publishBtn = document.getElementById('publishBtn');
+    const draftBtn = document.getElementById('draftBtn');
+    const progressContainer = document.getElementById('progressContainer');
+    const progressBar = document.getElementById('progressBar');
+    const progressStatus = document.getElementById('progressStatus');
+    const progressPercent = document.getElementById('progressPercent');
+    const errorAlert = document.getElementById('errorAlert');
+    const successModal = document.getElementById('successModal');
+    const addAnotherBtn = document.getElementById('addAnotherBtn');
+
+    let selectedFiles = [];
+
+    // Trigger file picker
+    selectPhotosBtn.addEventListener('click', () => photoInput.click());
+
+    photoInput.addEventListener('change', (e) => {
+        if (!e.target.files) return;
+        const newFiles = Array.from(e.target.files);
+        selectedFiles = [...selectedFiles, ...newFiles];
+        renderPreviews();
+        photoInput.value = '';
+    });
+
+    function renderPreviews() {
+        previewGrid.innerHTML = '';
+        selectedFiles.forEach((file, idx) => {
+            const card = document.createElement('div');
+            card.className = 'relative aspect-square rounded-xl overflow-hidden border border-stone-800 bg-stone-950 group';
+
+            const img = document.createElement('img');
+            img.className = 'w-full h-full object-cover';
+            img.src = URL.createObjectURL(file);
+
+            const badge = document.createElement('span');
+            badge.className = `absolute top-1.5 left-1.5 text-[9px] font-bold px-1.5 py-0.5 rounded shadow ${idx === 0 ? 'bg-amber-500 text-stone-950' : 'bg-black/60 text-white'}`;
+            badge.textContent = idx === 0 ? 'PRIMARY' : `#${idx + 1}`;
+
+            const removeBtn = document.createElement('button');
+            removeBtn.type = 'button';
+            removeBtn.className = 'absolute top-1 right-1 w-6 h-6 rounded-full bg-red-600/80 hover:bg-red-600 text-white text-xs flex items-center justify-center';
+            removeBtn.innerHTML = '&times;';
+            removeBtn.addEventListener('click', (ev) => {
+                ev.stopPropagation();
+                selectedFiles.splice(idx, 1);
+                renderPreviews();
+            });
+
+            card.appendChild(img);
+            card.appendChild(badge);
+            card.appendChild(removeBtn);
+            previewGrid.appendChild(card);
+        });
+
+        if (selectedFiles.length > 0) {
+            photoCountNotice.classList.remove('hidden');
+            photoCountVal.textContent = selectedFiles.length;
+        } else {
+            photoCountNotice.classList.add('hidden');
+        }
+    }
+
+    // Toggle price input on price mode
+    priceModeRadios.forEach(radio => {
+        radio.addEventListener('change', (e) => {
+            if (e.target.value === 'ASK') {
+                priceEtbGroup.classList.add('hidden');
+            } else {
+                priceEtbGroup.classList.remove('hidden');
+            }
+        });
+    });
+
+    // Client-side Canvas Image Compression
+    async function compressImage(file, maxDimension = 1600, quality = 0.82) {
+        return new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = (event) => {
+                const img = new Image();
+                img.src = event.target.result;
+                img.onload = () => {
+                    let { width, height } = img;
+                    if (width > maxDimension || height > maxDimension) {
+                        if (width > height) {
+                            height = Math.round((height * maxDimension) / width);
+                            width = maxDimension;
+                        } else {
+                            width = Math.round((width * maxDimension) / height);
+                            height = maxDimension;
+                        }
+                    }
+
+                    const canvas = document.createElement('canvas');
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    canvas.toBlob((blob) => {
+                        const compressedFile = new File([blob], file.name.replace(/\.[^/.]+$/, ".jpg"), {
+                            type: 'image/jpeg',
+                            lastModified: Date.now(),
+                        });
+                        resolve(compressedFile);
+                    }, 'image/jpeg', quality);
+                };
+            };
+        });
+    }
+
+    async function handleSubmit(action) {
+        errorAlert.classList.add('hidden');
+        const nameVal = document.getElementById('name').value.trim();
+        const catVal = document.getElementById('category_id').value;
+
+        if (!nameVal) {
+            showError("Please enter a furniture name.");
+            document.getElementById('name').focus();
+            return;
+        }
+        if (!catVal) {
+            showError("Please select a furniture category.");
+            document.getElementById('category_id').focus();
+            return;
+        }
+        if (action === 'publish' && selectedFiles.length === 0) {
+            showError("At least one photo is required to publish a product.");
+            return;
+        }
+
+        // Lock buttons
+        publishBtn.disabled = true;
+        draftBtn.disabled = true;
+        progressContainer.classList.remove('hidden');
+
+        try {
+            const formData = new FormData(document.getElementById('quickAddForm'));
+            formData.set('action', action);
+
+            // Compress photos client-side
+            const totalPhotos = selectedFiles.length;
+            for (let i = 0; i < totalPhotos; i++) {
+                const pct = Math.round(((i + 1) / (totalPhotos + 1)) * 60);
+                progressBar.style.width = `${pct}%`;
+                progressPercent.textContent = `${pct}%`;
+                progressStatus.textContent = `Compressing photo ${i + 1} of ${totalPhotos}...`;
+
+                const compressed = await compressImage(selectedFiles[i]);
+                formData.append('photos', compressed);
+            }
+
+            // Uploading
+            progressBar.style.width = '85%';
+            progressPercent.textContent = '85%';
+            progressStatus.textContent = 'Uploading to workshop server...';
+
+            const response = await fetch('/manage/quick-add/', {
+                method: 'POST',
+                body: formData,
+            });
+
+            const result = await response.json();
+
+            if (!response.ok || !result.success) {
+                throw new Error(result.error || 'Failed to save product');
+            }
+
+            progressBar.style.width = '100%';
+            progressPercent.textContent = '100%';
+            progressStatus.textContent = 'Published successfully!';
+
+            // Show success modal
+            document.getElementById('successCode').textContent = result.code;
+            document.getElementById('successName').textContent = result.name;
+            document.getElementById('viewLiveLink').href = `/en/products/${result.slug}`;
+            document.getElementById('editAdminLink').href = `/manage/catalog/product/${result.product_id}/change/`;
+            successModal.classList.remove('hidden');
+
+        } catch (err) {
+            showError(err.message || 'Network error occurred. Please try again.');
+        } finally {
+            publishBtn.disabled = false;
+            draftBtn.disabled = false;
+            progressContainer.classList.add('hidden');
+        }
+    }
+
+    function showError(msg) {
+        errorAlert.textContent = msg;
+        errorAlert.classList.remove('hidden');
+    }
+
+    publishBtn.addEventListener('click', () => handleSubmit('publish'));
+    draftBtn.addEventListener('click', () => handleSubmit('draft'));
+
+    addAnotherBtn.addEventListener('click', () => {
+        successModal.classList.add('hidden');
+        document.getElementById('quickAddForm').reset();
+        selectedFiles = [];
+        renderPreviews();
+    });
+})();
+</script>
 {% endblock %}

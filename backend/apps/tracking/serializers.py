@@ -1,8 +1,11 @@
 """Serializer for inquiry click events."""
+
 from __future__ import annotations
 
 from rest_framework import serializers
+
 from apps.catalog.models import Product
+
 from .models import ContactClick
 
 

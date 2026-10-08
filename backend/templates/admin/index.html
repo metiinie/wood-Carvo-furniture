@@ -1,0 +1,166 @@
+{% extends 'admin/base.html' %}
+{% load i18n %}
+
+{% block title %}{{ title }} | {{ site_title|default:_('Django site admin') }}{% endblock %}
+
+{% block branding %}
+    {% include "unfold/helpers/site_branding.html" %}
+{% endblock %}
+
+{% block content %}
+<div class="space-y-6 mb-8">
+    <!-- Quick Add Hero Banner (Mobile-first primary action) -->
+    <div class="bg-gradient-to-r from-amber-900 to-amber-950 border border-amber-700/50 rounded-xl p-5 shadow-lg flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div>
+            <div class="flex items-center gap-2">
+                <span class="text-xl">⚡</span>
+                <h2 class="text-lg font-bold text-amber-100">Workshop Quick Add</h2>
+            </div>
+            <p class="text-xs text-amber-200/80 mt-1">Take photos with your phone camera, set price & publish in under 60 seconds.</p>
+        </div>
+        <a href="/manage/quick-add/" class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-lg bg-amber-500 hover:bg-amber-400 text-stone-950 font-bold text-sm tracking-wide shadow-md transition-all whitespace-nowrap min-h-[44px]">
+            <span>+ Quick Add Product</span>
+        </a>
+    </div>
+
+    {% if dashboard_metrics %}
+    <!-- 1. Catalog Status Overview Cards -->
+    <div>
+        <h3 class="text-xs font-bold uppercase tracking-wider text-stone-400 mb-3">Showcase & Inventory Status</h3>
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+            <div class="bg-stone-900 border border-stone-800 rounded-xl p-4 shadow-sm">
+                <span class="text-xs font-medium text-emerald-400 uppercase tracking-wider block">Published</span>
+                <span class="text-2xl font-bold text-white mt-1 block">{{ dashboard_metrics.status_counts.published }}</span>
+                <span class="text-[11px] text-stone-500">Live on site</span>
+            </div>
+
+            <div class="bg-stone-900 border border-stone-800 rounded-xl p-4 shadow-sm">
+                <span class="text-xs font-medium text-cyan-400 uppercase tracking-wider block">Ready</span>
+                <span class="text-2xl font-bold text-white mt-1 block">{{ dashboard_metrics.status_counts.ready }}</span>
+                <span class="text-[11px] text-stone-500">In showroom</span>
+            </div>
+
+            <div class="bg-stone-900 border border-stone-800 rounded-xl p-4 shadow-sm">
+                <span class="text-xs font-medium text-amber-400 uppercase tracking-wider block">Made to Order</span>
+                <span class="text-2xl font-bold text-white mt-1 block">{{ dashboard_metrics.status_counts.made_to_order }}</span>
+                <span class="text-[11px] text-stone-500">With lead time</span>
+            </div>
+
+            <div class="bg-stone-900 border border-stone-800 rounded-xl p-4 shadow-sm">
+                <span class="text-xs font-medium text-yellow-500 uppercase tracking-wider block">Sold</span>
+                <span class="text-2xl font-bold text-white mt-1 block">{{ dashboard_metrics.status_counts.sold }}</span>
+                <span class="text-[11px] text-stone-500">Portfolio archive</span>
+            </div>
+
+            <div class="bg-stone-900 border border-stone-800 rounded-xl p-4 shadow-sm">
+                <span class="text-xs font-medium text-orange-400 uppercase tracking-wider block">Drafts</span>
+                <span class="text-2xl font-bold text-white mt-1 block">{{ dashboard_metrics.status_counts.draft }}</span>
+                <span class="text-[11px] text-stone-500">Unpublished</span>
+            </div>
+
+            <div class="bg-stone-900 border border-stone-800 rounded-xl p-4 shadow-sm">
+                <span class="text-xs font-medium text-stone-400 uppercase tracking-wider block">Total Items</span>
+                <span class="text-2xl font-bold text-white mt-1 block">{{ dashboard_metrics.status_counts.total }}</span>
+                <span class="text-[11px] text-stone-500">All records</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. Customer Inquiries by Channel (Last 30 Days) -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div class="bg-stone-900 border border-stone-800 rounded-xl p-5 shadow-sm lg:col-span-1">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-stone-400 mb-4">Customer Inquiries (Last 30 Days)</h3>
+            <div class="space-y-3">
+                <div class="flex items-center justify-between p-3 rounded-lg bg-emerald-950/40 border border-emerald-800/30">
+                    <div class="flex items-center gap-2">
+                        <span class="text-lg">💬</span>
+                        <div>
+                            <span class="text-sm font-semibold text-emerald-200 block">WhatsApp</span>
+                            <span class="text-[10px] text-emerald-400/80">Direct chat taps</span>
+                        </div>
+                    </div>
+                    <span class="text-xl font-bold text-emerald-300">{{ dashboard_metrics.clicks_30d.whatsapp }}</span>
+                </div>
+
+                <div class="flex items-center justify-between p-3 rounded-lg bg-sky-950/40 border border-sky-800/30">
+                    <div class="flex items-center gap-2">
+                        <span class="text-lg">✈️</span>
+                        <div>
+                            <span class="text-sm font-semibold text-sky-200 block">Telegram</span>
+                            <span class="text-[10px] text-sky-400/80">Copied message & chat</span>
+                        </div>
+                    </div>
+                    <span class="text-xl font-bold text-sky-300">{{ dashboard_metrics.clicks_30d.telegram }}</span>
+                </div>
+
+                <div class="flex items-center justify-between p-3 rounded-lg bg-amber-950/40 border border-amber-800/30">
+                    <div class="flex items-center gap-2">
+                        <span class="text-lg">📞</span>
+                        <div>
+                            <span class="text-sm font-semibold text-amber-200 block">Phone Calls</span>
+                            <span class="text-[10px] text-amber-400/80">Voice call taps</span>
+                        </div>
+                    </div>
+                    <span class="text-xl font-bold text-amber-300">{{ dashboard_metrics.clicks_30d.phone }}</span>
+                </div>
+            </div>
+
+            <div class="mt-4 pt-4 border-t border-stone-800 flex justify-between text-xs text-stone-400">
+                <span>Total Inquiries:</span>
+                <span class="font-bold text-white">{{ dashboard_metrics.clicks_30d.total }}</span>
+            </div>
+        </div>
+
+        <!-- 3. Top 5 Most-Clicked Furniture Pieces -->
+        <div class="bg-stone-900 border border-stone-800 rounded-xl p-5 shadow-sm lg:col-span-2">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-stone-400 mb-4">Top 5 Inquired Furniture Pieces</h3>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs">
+                    <thead>
+                        <tr class="border-b border-stone-800 text-stone-400">
+                            <th class="pb-2 font-medium">Piece</th>
+                            <th class="pb-2 font-medium">Category</th>
+                            <th class="pb-2 font-medium">Price</th>
+                            <th class="pb-2 font-medium text-right">Inquiries</th>
+                            <th class="pb-2 font-medium text-right">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-stone-800">
+                        {% for item in dashboard_metrics.top_products %}
+                        <tr class="hover:bg-stone-800/50">
+                            <td class="py-2.5">
+                                <div class="flex items-center gap-3">
+                                    {% if item.thumbnail %}
+                                    <img src="{{ item.thumbnail }}" class="w-9 h-9 rounded-md object-cover bg-stone-800" />
+                                    {% else %}
+                                    <div class="w-9 h-9 rounded-md bg-stone-800 text-stone-400 flex items-center justify-center font-bold text-[10px]">WC</div>
+                                    {% endif %}
+                                    <div>
+                                        <span class="font-semibold text-white block">{{ item.name }}</span>
+                                        <span class="text-[10px] text-amber-400 font-mono">{{ item.code }}</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-2.5 text-stone-300">{{ item.category }}</td>
+                            <td class="py-2.5 text-stone-300 font-medium">{{ item.formatted_price }}</td>
+                            <td class="py-2.5 text-right font-bold text-amber-400">{{ item.clicks }}</td>
+                            <td class="py-2.5 text-right">
+                                <a href="/manage/catalog/product/{{ item.id }}/change/" class="text-stone-400 hover:text-white underline">Edit</a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="py-4 text-center text-stone-500">No products available yet.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Default Unfold App/Model List -->
+{% include "unfold/helpers/dashboard_default.html" %}
+{% endblock %}

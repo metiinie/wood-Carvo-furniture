@@ -46,6 +46,7 @@ class Command(BaseCommand):
 
         # Setup primary admin user: rushdseid@gmail.com
         from django.contrib.auth import get_user_model
+
         User = get_user_model()
         admin_user, created = User.objects.get_or_create(
             username="rushdseid@gmail.com",

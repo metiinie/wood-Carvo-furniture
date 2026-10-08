@@ -98,6 +98,7 @@ class ProductAdmin(ModelAdmin):
         "archive_products",
         "mark_sold",
         "toggle_featured",
+        "repost_to_telegram",
     ]
 
     fieldsets = (
@@ -162,6 +163,7 @@ class ProductAdmin(ModelAdmin):
             {
                 "classes": ("collapse",),
                 "fields": (
+                    "post_to_telegram",
                     "published_at",
                     "telegram_posted_at",
                     "telegram_message_id",
@@ -226,6 +228,16 @@ class ProductAdmin(ModelAdmin):
             prod.featured = not prod.featured
             prod.save(update_fields=["featured"])
         self.message_user(request, f"Toggled featured status on {queryset.count()} products.")
+
+    @action(description="📢 Re-post to Telegram channel")
+    def repost_to_telegram(self, request, queryset):
+        from apps.integrations.telegram import post_product_to_telegram
+
+        count = 0
+        for prod in queryset:
+            post_product_to_telegram(prod.pk)
+            count += 1
+        self.message_user(request, f"Triggered Telegram channel broadcast for {count} product(s).")
 
 
 @admin.register(GalleryItem)

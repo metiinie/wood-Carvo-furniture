@@ -1,8 +1,11 @@
 """Serializers for site and workshop settings API."""
+
 from __future__ import annotations
 
 from rest_framework import serializers
+
 from apps.catalog.utils import get_image_variants, resolve_translated_field
+
 from .models import SiteSettings
 
 

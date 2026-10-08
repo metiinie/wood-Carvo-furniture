@@ -1,6 +1,8 @@
 """Comprehensive API tests for all WOOD CARVO public endpoints and resolution logic."""
+
 import pytest
 from django.test import Client
+
 from apps.catalog.models import Category, GalleryItem, Product, ProductImage
 from apps.site.models import SiteSettings
 from apps.tracking.models import ContactClick

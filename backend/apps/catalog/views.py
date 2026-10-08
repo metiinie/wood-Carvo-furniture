@@ -1,4 +1,5 @@
 """API views for Category, Product, Gallery, and Sitemap data."""
+
 from __future__ import annotations
 
 from django.db.models import Q
@@ -7,6 +8,7 @@ from rest_framework import generics, status
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.views import APIView
+
 from .models import Category, GalleryItem, Product
 from .serializers import (
     CategorySerializer,
@@ -26,7 +28,9 @@ class StandardResultsSetPagination(PageNumberPagination):
     summary="List active furniture categories",
     description="Returns all active categories ordered by workshop display sequence.",
     parameters=[
-        OpenApiParameter(name="lang", type=str, description="Language code: en, am, or om", default="en"),
+        OpenApiParameter(
+            name="lang", type=str, description="Language code: en, am, or om", default="en"
+        ),
     ],
 )
 class CategoryListAPIView(generics.ListAPIView):
@@ -41,12 +45,20 @@ class CategoryListAPIView(generics.ListAPIView):
     summary="Browse published furniture products",
     description="Search, filter, and paginate published workshop furniture items.",
     parameters=[
-        OpenApiParameter(name="lang", type=str, description="Language code: en, am, om", default="en"),
+        OpenApiParameter(
+            name="lang", type=str, description="Language code: en, am, om", default="en"
+        ),
         OpenApiParameter(name="category", type=str, description="Category slug"),
-        OpenApiParameter(name="q", type=str, description="Search query across title (all languages) and code"),
-        OpenApiParameter(name="availability", type=str, description="READY, MADE_TO_ORDER, or SOLD"),
+        OpenApiParameter(
+            name="q", type=str, description="Search query across title (all languages) and code"
+        ),
+        OpenApiParameter(
+            name="availability", type=str, description="READY, MADE_TO_ORDER, or SOLD"
+        ),
         OpenApiParameter(name="featured", type=bool, description="Filter only featured items"),
-        OpenApiParameter(name="sort", type=str, description="Sort order: newest or featured", default="newest"),
+        OpenApiParameter(
+            name="sort", type=str, description="Sort order: newest or featured", default="newest"
+        ),
         OpenApiParameter(name="page", type=int, description="Page number", default=1),
     ],
 )
@@ -56,7 +68,11 @@ class ProductListAPIView(generics.ListAPIView):
 
     def get_queryset(self):
         # Only PUBLISHED items are visible to the public
-        qs = Product.objects.filter(status=Product.Status.PUBLISHED).select_related("category").prefetch_related("images")
+        qs = (
+            Product.objects.filter(status=Product.Status.PUBLISHED)
+            .select_related("category")
+            .prefetch_related("images")
+        )
 
         # Category filter
         cat_slug = self.request.query_params.get("category")
@@ -102,7 +118,9 @@ class ProductListAPIView(generics.ListAPIView):
     summary="Retrieve single furniture item by slug",
     description="Returns detailed specs, responsive image variants, and related products.",
     parameters=[
-        OpenApiParameter(name="lang", type=str, description="Language code: en, am, om", default="en"),
+        OpenApiParameter(
+            name="lang", type=str, description="Language code: en, am, om", default="en"
+        ),
     ],
 )
 class ProductDetailAPIView(generics.RetrieveAPIView):
@@ -110,14 +128,20 @@ class ProductDetailAPIView(generics.RetrieveAPIView):
     lookup_field = "slug"
 
     def get_queryset(self):
-        return Product.objects.filter(status=Product.Status.PUBLISHED).select_related("category").prefetch_related("images")
+        return (
+            Product.objects.filter(status=Product.Status.PUBLISHED)
+            .select_related("category")
+            .prefetch_related("images")
+        )
 
 
 @extend_schema(
     summary="List portfolio gallery items",
     description="Workshop photography and finished bespoke projects.",
     parameters=[
-        OpenApiParameter(name="lang", type=str, description="Language code: en, am, om", default="en"),
+        OpenApiParameter(
+            name="lang", type=str, description="Language code: en, am, om", default="en"
+        ),
         OpenApiParameter(name="category", type=str, description="Optional category slug"),
     ],
 )
@@ -126,7 +150,11 @@ class GalleryListAPIView(generics.ListAPIView):
     pagination_class = None
 
     def get_queryset(self):
-        qs = GalleryItem.objects.filter(is_active=True).select_related("category").order_by("sort_order", "-id")
+        qs = (
+            GalleryItem.objects.filter(is_active=True)
+            .select_related("category")
+            .order_by("sort_order", "-id")
+        )
         cat_slug = self.request.query_params.get("category")
         if cat_slug:
             qs = qs.filter(category__slug=cat_slug)
@@ -150,7 +178,9 @@ class GalleryListAPIView(generics.ListAPIView):
 )
 class SitemapDataAPIView(APIView):
     def get(self, request):
-        products = Product.objects.filter(status=Product.Status.PUBLISHED).values("slug", "updated_at")
+        products = Product.objects.filter(status=Product.Status.PUBLISHED).values(
+            "slug", "updated_at"
+        )
         categories = Category.objects.filter(is_active=True).values("slug")
 
         data = {

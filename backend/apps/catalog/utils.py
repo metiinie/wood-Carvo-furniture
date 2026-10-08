@@ -1,7 +1,9 @@
 """Utilities for internationalization resolution and image variants."""
+
 from __future__ import annotations
 
 from typing import Any
+
 from django.db.models.fields.files import FieldFile
 from rest_framework.request import Request
 
@@ -30,7 +32,9 @@ def resolve_translated_field(instance: Any, field_name: str, lang: str = "en") -
     return str(base_val).strip() if base_val else ""
 
 
-def get_image_variants(image_field: FieldFile | None, request: Request | None = None) -> dict[str, str]:
+def get_image_variants(
+    image_field: FieldFile | None, request: Request | None = None
+) -> dict[str, str]:
     """
     Returns transformed image URLs:
     - thumb: 400w

@@ -1,8 +1,10 @@
 """Test creating, translating, and publishing a product in Django admin."""
+
 import pytest
 from django.contrib.auth import get_user_model
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import Client
+
 from apps.catalog.models import Category, Product
 
 User = get_user_model()
@@ -66,7 +68,9 @@ def test_admin_create_translate_publish_product():
     }
 
     response = client.post(add_url, data=post_data)
-    assert response.status_code == 302, f"Failed with response content: {response.content.decode()[:500]}"
+    assert response.status_code == 302, (
+        f"Failed with response content: {response.content.decode()[:500]}"
+    )
     assert response.url == "/manage/catalog/product/"
 
     # Verify product was created in database

@@ -123,6 +123,10 @@ class Product(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     # Telegram Auto-Post tracking
+    post_to_telegram = models.BooleanField(
+        default=True,
+        help_text="Broadcast to Telegram channel when published",
+    )
     telegram_posted_at = models.DateTimeField(null=True, blank=True)
     telegram_message_id = models.CharField(max_length=100, blank=True)
 
