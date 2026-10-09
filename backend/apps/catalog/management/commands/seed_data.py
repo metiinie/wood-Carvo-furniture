@@ -60,8 +60,8 @@ class Command(BaseCommand):
 
         # 2. Setup Site Settings singleton
         settings_obj = SiteSettings.load()
-        settings_obj.phone_number = "+251911223344"
-        settings_obj.whatsapp_number = "+251911223344"
+        settings_obj.phone_number = "+251910842430"
+        settings_obj.whatsapp_number = "+251910842430"
         settings_obj.telegram_username = "woodcarvo"
         settings_obj.google_maps_url = "https://maps.google.com/?q=Bole+Addis+Ababa"
 

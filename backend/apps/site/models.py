@@ -10,7 +10,7 @@ class SiteSettings(models.Model):
 
     whatsapp_number = models.CharField(
         max_length=50,
-        default="+251911223344",
+        default="+251910842430",
         help_text="Format: +2519XXXXXXXX (international format without dashes or spaces for wa.me)",
     )
     telegram_username = models.CharField(
@@ -20,7 +20,7 @@ class SiteSettings(models.Model):
     )
     phone_number = models.CharField(
         max_length=50,
-        default="+251911223344",
+        default="+251910842430",
         help_text="Direct phone line for voice calls",
     )
     address = models.CharField(
