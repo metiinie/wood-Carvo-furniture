@@ -213,6 +213,8 @@ UNFOLD = {
     "SITE_HEADER": "WOOD CARVO Admin",
     "SITE_SUBHEADER": "Addis Ababa • Handcrafted Furniture Management",
     "SITE_URL": "/",
+    "SITE_ICON": "/static/images/logo.jpg",
+    "SITE_LOGO": "/static/images/logo.jpg",
     "THEME": "dark",
     "DASHBOARD_CALLBACK": "apps.adminpanel.dashboard.dashboard_callback",
     "COLORS": {

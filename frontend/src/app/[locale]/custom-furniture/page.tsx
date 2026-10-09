@@ -31,7 +31,7 @@ export default async function CustomFurniturePage({ params: { locale } }: Custom
   const tInquiry = await getTranslations({ locale, namespace: "inquiry" });
   const settings = await getSiteSettings(locale);
 
-  const cleanWa = (settings?.whatsapp_number || "+251911223344").replace(/[^0-9]/g, "");
+  const cleanWa = (settings?.whatsapp_number || "+251910842430").replace(/[^0-9]/g, "");
   const cleanTg = (settings?.telegram_username || "woodcarvo").replace("@", "");
   const customWaText = encodeURIComponent(
     "Hello WOOD CARVO, I would like to inquire about a custom bespoke furniture commission. I have photos/measurements to share."
@@ -71,6 +71,15 @@ export default async function CustomFurniturePage({ params: { locale } }: Custom
       <main className="flex-1 py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         {/* Hero Section */}
         <div className="text-center max-w-3xl mx-auto mb-16">
+          <div className="flex justify-center mb-6">
+            <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-3xl overflow-hidden border-2 border-wood-walnut/30 shadow-xl bg-wood-dark ring-4 ring-wood-warm/30">
+              <img
+                src="/images/logo.webp"
+                alt="WOOD CARVO"
+                className="w-full h-full object-cover"
+              />
+            </div>
+          </div>
           <span className="inline-flex items-center gap-1.5 py-1.5 px-4 rounded-full bg-wood-walnut/15 text-wood-walnut text-xs font-semibold uppercase tracking-widest mb-4">
             <Sparkles className="w-3.5 h-3.5 text-amber-700" />
             Bespoke Orders

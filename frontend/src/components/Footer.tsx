@@ -12,13 +12,13 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           <div className="space-y-4 md:col-span-2">
-            <Logo className="text-wood-cream [&_span]:text-wood-cream [&_.text-wood-walnut]:text-wood-warm" />
+            <Logo variant="footer" />
             <p className="text-sm text-wood-cream/70 max-w-md leading-relaxed">
               Bespoke furniture workshop in Addis Ababa, Ethiopia. Specializing in handcrafted
               solid hardwood dining tables, platform beds, living sets, and commercial fit-outs.
             </p>
             <p className="text-xs text-wood-warm font-semibold">
-              Bole Sub-city, Addis Ababa, Ethiopia • +251 911 22 33 44
+              Bole Sub-city, Addis Ababa, Ethiopia • +251 910 84 24 30
             </p>
           </div>
 
@@ -57,7 +57,7 @@ export default function Footer() {
             <ul className="space-y-2 text-sm text-wood-cream/80">
               <li>
                 <a
-                  href="https://wa.me/251911223344"
+                  href="https://wa.me/251910842430"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-emerald-400 transition-colors"
@@ -76,7 +76,7 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <a href="tel:+251911223344" className="hover:text-wood-warm transition-colors">
+                <a href="tel:+251910842430" className="hover:text-wood-warm transition-colors">
                   Direct Phone Call
                 </a>
               </li>

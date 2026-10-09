@@ -31,7 +31,7 @@ export default async function HomePage({
     name: "WOOD CARVO",
     description: "Bespoke furniture workshop in Addis Ababa, Ethiopia. Handcrafted solid hardwood dining tables, sofas, and bedroom suites.",
     url: siteUrl,
-    telephone: settings?.phone_number || "+251911223344",
+    telephone: settings?.phone_number || "+251910842430",
     priceRange: "ETB",
     address: {
       "@type": "PostalAddress",
@@ -64,9 +64,22 @@ export default async function HomePage({
 
       <main className="flex-1">
         {/* 1. Hero Section */}
-        <section className="relative py-20 lg:py-32 overflow-hidden bg-gradient-to-b from-wood-cream via-wood-cream to-wood-surface border-b border-wood-walnut/15">
+        <section className="relative py-16 lg:py-28 overflow-hidden bg-gradient-to-b from-wood-cream via-wood-cream to-wood-surface border-b border-wood-walnut/15">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-            <span className="inline-block py-1.5 px-4 rounded-full bg-wood-walnut/15 text-wood-walnut text-xs font-semibold tracking-widest uppercase mb-6">
+            {/* Official 3D Wood Carvo Logo Emblem */}
+            <div className="flex justify-center mb-6">
+              <div className="relative w-28 h-28 sm:w-36 sm:h-36 rounded-3xl overflow-hidden border-2 border-wood-walnut/30 shadow-2xl bg-wood-dark ring-4 ring-wood-warm/30 transform hover:scale-105 transition-all duration-300">
+                <Image
+                  src="/images/logo.webp"
+                  alt="WOOD CARVO Handcrafted Furniture Addis Ababa"
+                  fill
+                  priority
+                  className="object-cover"
+                />
+              </div>
+            </div>
+
+            <span className="inline-block py-1.5 px-4 rounded-full bg-wood-walnut/15 text-wood-walnut text-xs font-semibold tracking-widest uppercase mb-4">
               Addis Ababa • Handcrafted Hardwood Furniture
             </span>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold text-wood-dark tracking-tight max-w-4xl mx-auto leading-tight">
@@ -236,10 +249,18 @@ export default async function HomePage({
                   className="object-cover"
                 />
               ) : (
-                <div className="w-full h-full min-h-[300px] flex flex-col items-center justify-center bg-wood-walnut/10 text-wood-walnut/70 p-8 text-center">
-                  <span className="text-5xl mb-3">📍</span>
-                  <span className="font-serif font-bold text-xl text-wood-dark">WOOD CARVO Workshop</span>
-                  <span className="text-xs mt-1">Addis Ababa, Ethiopia</span>
+                <div className="relative w-full h-full min-h-[320px] flex flex-col items-center justify-center bg-wood-dark overflow-hidden">
+                  <Image
+                    src="/images/logo.webp"
+                    alt="WOOD CARVO Showroom & Workshop in Addis Ababa"
+                    fill
+                    className="object-cover opacity-90"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-wood-dark via-wood-dark/40 to-transparent" />
+                  <div className="absolute bottom-6 left-6 right-6 text-white text-center">
+                    <span className="font-serif font-bold text-xl text-wood-cream block">WOOD CARVO Workshop</span>
+                    <span className="text-xs text-wood-warm mt-0.5 block">Bole Sub-city, Addis Ababa, Ethiopia</span>
+                  </div>
                 </div>
               )}
             </div>
@@ -276,7 +297,7 @@ export default async function HomePage({
                   View Map & Directions
                 </Link>
                 <a
-                  href={`https://wa.me/${(settings?.whatsapp_number || "+251911223344").replace(/[^0-9]/g, "")}`}
+                  href={`https://wa.me/${(settings?.whatsapp_number || "+251910842430").replace(/[^0-9]/g, "")}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="border border-wood-walnut/30 hover:bg-wood-walnut/10 text-wood-dark text-xs font-semibold px-6 py-3 rounded-full transition-all inline-flex items-center gap-2"

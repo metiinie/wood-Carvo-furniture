@@ -39,6 +39,17 @@ export default async function AboutPage({ params: { locale } }: AboutPageProps) 
       <main className="flex-1 py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
+          <div className="flex justify-center mb-6">
+            <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-3xl overflow-hidden border-2 border-wood-walnut/30 shadow-xl bg-wood-dark ring-4 ring-wood-warm/30">
+              <Image
+                src="/images/logo.webp"
+                alt="WOOD CARVO"
+                fill
+                priority
+                className="object-cover"
+              />
+            </div>
+          </div>
           <span className="text-xs font-semibold uppercase tracking-widest text-wood-walnut">
             Our Story & Craft
           </span>
@@ -62,10 +73,18 @@ export default async function AboutPage({ params: { locale } }: AboutPageProps) 
                 className="object-cover"
               />
             ) : (
-              <div className="w-full h-full flex flex-col items-center justify-center p-8 bg-wood-dark text-wood-cream text-center">
-                <span className="text-5xl mb-3">🪵</span>
-                <span className="font-serif font-bold text-2xl text-wood-warm">WOOD CARVO</span>
-                <span className="text-xs text-wood-cream/70 mt-1">Master Artisans • Addis Ababa</span>
+              <div className="relative w-full h-full flex flex-col items-center justify-center p-8 bg-wood-dark text-wood-cream text-center overflow-hidden">
+                <Image
+                  src="/images/logo.webp"
+                  alt="WOOD CARVO Master Artisans Addis Ababa"
+                  fill
+                  className="object-cover opacity-90"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-wood-dark via-wood-dark/30 to-transparent" />
+                <div className="absolute bottom-6 left-6 right-6 text-white text-center">
+                  <span className="font-serif font-bold text-2xl text-wood-warm block">WOOD CARVO</span>
+                  <span className="text-xs text-wood-cream/80 mt-1 block">Master Artisans • Addis Ababa</span>
+                </div>
               </div>
             )}
           </div>

@@ -47,11 +47,24 @@ export async function generateMetadata({
         om: siteUrl,
       },
     },
+    icons: {
+      icon: "/favicon.ico",
+      shortcut: "/icon.png",
+      apple: "/apple-touch-icon.png",
+    },
     openGraph: {
       type: "website",
       locale: locale === "am" ? "am_ET" : locale === "om" ? "om_ET" : "en_US",
       url: siteUrl,
       siteName: "WOOD CARVO",
+      images: [
+        {
+          url: `${siteUrl}/images/wood-carvo-logo.jpg`,
+          width: 1200,
+          height: 675,
+          alt: "WOOD CARVO — Your Vision, Our Craft",
+        },
+      ],
     },
   };
 }

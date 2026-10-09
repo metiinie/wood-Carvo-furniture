@@ -30,8 +30,8 @@ export default async function ContactPage({ params: { locale } }: ContactPagePro
   const t = await getTranslations({ locale, namespace: "contact" });
   const settings = await getSiteSettings(locale);
 
-  const cleanPhone = (settings?.phone_number || "+251911223344").replace(/[^0-9+]/g, "");
-  const cleanWa = (settings?.whatsapp_number || "+251911223344").replace(/[^0-9]/g, "");
+  const cleanPhone = (settings?.phone_number || "+251910842430").replace(/[^0-9+]/g, "");
+  const cleanWa = (settings?.whatsapp_number || "+251910842430").replace(/[^0-9]/g, "");
   const cleanTg = (settings?.telegram_username || "woodcarvo").replace("@", "");
   const mapsUrl = settings?.google_maps_url || "https://maps.google.com/?q=Bole+Addis+Ababa";
 
@@ -41,6 +41,15 @@ export default async function ContactPage({ params: { locale } }: ContactPagePro
 
       <main className="flex-1 py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className="text-center max-w-2xl mx-auto mb-14">
+          <div className="flex justify-center mb-6">
+            <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-3xl overflow-hidden border-2 border-wood-walnut/30 shadow-xl bg-wood-dark ring-4 ring-wood-warm/30">
+              <img
+                src="/images/logo.webp"
+                alt="WOOD CARVO"
+                className="w-full h-full object-cover"
+              />
+            </div>
+          </div>
           <span className="text-xs font-semibold uppercase tracking-widest text-wood-walnut">
             Get In Touch
           </span>
@@ -114,7 +123,7 @@ export default async function ContactPage({ params: { locale } }: ContactPagePro
                   </span>
                   <div>
                     <h3 className="font-semibold text-wood-dark text-sm">Direct Phone Call</h3>
-                    <p className="text-xs text-wood-dark/70">{settings?.phone_number || "+251 911 22 33 44"}</p>
+                    <p className="text-xs text-wood-dark/70">{settings?.phone_number || "+251 910 84 24 30"}</p>
                   </div>
                 </div>
                 <span className="text-xs font-bold text-wood-dark group-hover:translate-x-1 transition-transform">

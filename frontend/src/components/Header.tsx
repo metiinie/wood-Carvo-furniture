@@ -49,7 +49,7 @@ export default function Header() {
         <div className="hidden sm:flex items-center gap-3">
           <LanguageSwitcher />
           <a
-            href="https://wa.me/251911223344"
+            href="https://wa.me/251910842430"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-semibold px-4 py-2.5 rounded-full shadow-sm transition-all min-h-[40px]"
@@ -94,14 +94,14 @@ export default function Header() {
 
           <div className="mt-5 pt-4 border-t border-wood-walnut/15 flex flex-col gap-3">
             <a
-              href="tel:+251911223344"
+              href="tel:+251910842430"
               className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-wood-dark text-wood-warm font-semibold text-sm min-h-[44px]"
             >
               <Phone className="w-4 h-4" />
-              <span>+251 911 22 33 44</span>
+              <span>+251 910 84 24 30</span>
             </a>
             <a
-              href="https://wa.me/251911223344"
+              href="https://wa.me/251910842430"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-emerald-700 text-white font-semibold text-sm min-h-[44px]"

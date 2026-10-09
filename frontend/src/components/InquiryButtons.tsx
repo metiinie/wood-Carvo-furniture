@@ -18,9 +18,9 @@ export default function InquiryButtons({
   productId,
   productName,
   productCode,
-  whatsappNumber = "+251911223344",
+  whatsappNumber = "+251910842430",
   telegramUsername = "woodcarvo",
-  phoneNumber = "+251911223344",
+  phoneNumber = "+251910842430",
 }: InquiryButtonsProps) {
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const t = useTranslations("inquiry");
