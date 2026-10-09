@@ -16,12 +16,12 @@ export async function generateMetadata({ params: { locale } }: GalleryPageProps)
     title: `${tNav("gallery")} | WOOD CARVO — Workshop Portfolio Addis Ababa`,
     description: "Visual portfolio of custom hardwood furniture, timber grains, joinery details, and finished workshop pieces in Addis Ababa.",
     alternates: {
-      canonical: `${siteUrl}/${locale}/gallery`,
+      canonical: `${siteUrl}/gallery`,
     },
     openGraph: {
       title: `${tNav("gallery")} | WOOD CARVO`,
       description: "Portfolio of handcrafted furniture pieces by WOOD CARVO.",
-      url: `${siteUrl}/${locale}/gallery`,
+      url: `${siteUrl}/gallery`,
     },
   };
 }

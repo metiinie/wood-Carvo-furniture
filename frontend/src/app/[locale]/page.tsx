@@ -30,7 +30,7 @@ export default async function HomePage({
     "@type": "FurnitureStore",
     name: "WOOD CARVO",
     description: "Bespoke furniture workshop in Addis Ababa, Ethiopia. Handcrafted solid hardwood dining tables, sofas, and bedroom suites.",
-    url: `${siteUrl}/${locale}`,
+    url: siteUrl,
     telephone: settings?.phone_number || "+251911223344",
     priceRange: "ETB",
     address: {
@@ -77,14 +77,14 @@ export default async function HomePage({
             </p>
             <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
               <Link
-                href={`/${locale}/products`}
+                href="/products"
                 className="bg-wood-dark hover:bg-wood-walnut text-wood-warm font-semibold text-sm px-8 py-4 rounded-full shadow-md hover:shadow-xl transition-all"
                 id="hero-cta-explore"
               >
                 {tCommon("exploreFurniture")}
               </Link>
               <Link
-                href={`/${locale}/custom-furniture`}
+                href="/custom-furniture"
                 className="bg-transparent hover:bg-wood-walnut/10 text-wood-dark font-semibold text-sm px-8 py-4 rounded-full border border-wood-walnut/30 transition-all"
                 id="hero-cta-custom"
               >
@@ -105,7 +105,7 @@ export default async function HomePage({
                 <div className="w-16 h-1 bg-wood-warm mt-3 rounded-full" />
               </div>
               <Link
-                href={`/${locale}/categories`}
+                href="/categories"
                 className="mt-4 sm:mt-0 text-sm font-semibold text-wood-walnut hover:text-wood-dark flex items-center gap-1 group"
               >
                 <span>View all categories</span>
@@ -135,7 +135,7 @@ export default async function HomePage({
                 <div className="w-16 h-1 bg-wood-warm mt-3 rounded-full" />
               </div>
               <Link
-                href={`/${locale}/products`}
+                href="/products"
                 className="mt-4 sm:mt-0 text-sm font-semibold text-wood-walnut hover:text-wood-dark flex items-center gap-1 group"
               >
                 <span>Browse all pieces</span>
@@ -212,7 +212,7 @@ export default async function HomePage({
 
               <div className="flex-shrink-0">
                 <Link
-                  href={`/${locale}/custom-furniture`}
+                  href="/custom-furniture"
                   className="inline-flex items-center gap-2 bg-wood-warm hover:bg-amber-400 text-wood-dark font-bold text-sm px-8 py-4 rounded-full shadow-lg transition-all"
                   id="home-cta-custom-banner"
                 >
@@ -270,7 +270,7 @@ export default async function HomePage({
 
               <div className="pt-2 flex flex-wrap gap-4">
                 <Link
-                  href={`/${locale}/contact`}
+                  href="/contact"
                   className="bg-wood-dark hover:bg-wood-walnut text-wood-warm text-xs font-semibold px-6 py-3 rounded-full transition-all"
                 >
                   View Map & Directions

@@ -16,12 +16,12 @@ export async function generateMetadata({ params: { locale } }: CategoriesPagePro
     title: `${tNav("categories")} | WOOD CARVO — Bespoke Furniture Addis Ababa`,
     description: "Explore our handcrafted solid wood furniture collections organized by living spaces in Addis Ababa.",
     alternates: {
-      canonical: `${siteUrl}/${locale}/categories`,
+      canonical: `${siteUrl}/categories`,
     },
     openGraph: {
       title: `${tNav("categories")} | WOOD CARVO`,
       description: "Explore handcrafted furniture collections by WOOD CARVO.",
-      url: `${siteUrl}/${locale}/categories`,
+      url: `${siteUrl}/categories`,
     },
   };
 }

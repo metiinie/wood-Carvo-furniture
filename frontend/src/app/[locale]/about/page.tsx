@@ -18,12 +18,12 @@ export async function generateMetadata({ params: { locale } }: AboutPageProps): 
     title: `${tNav("about")} | WOOD CARVO — Addis Ababa Workshop`,
     description: "Learn about the WOOD CARVO furniture workshop in Addis Ababa, Ethiopia. Kiln-dried hardwoods, master artisanal joinery, and heirloom craftsmanship.",
     alternates: {
-      canonical: `${siteUrl}/${locale}/about`,
+      canonical: `${siteUrl}/about`,
     },
     openGraph: {
       title: `${tNav("about")} | WOOD CARVO`,
       description: "Our story, artisans, and timber standards at WOOD CARVO.",
-      url: `${siteUrl}/${locale}/about`,
+      url: `${siteUrl}/about`,
     },
   };
 }
@@ -147,7 +147,7 @@ export default async function AboutPage({ params: { locale } }: AboutPageProps) 
           </p>
           <div className="mt-6 flex justify-center gap-4">
             <Link
-              href={`/${locale}/contact`}
+              href="/contact"
               className="bg-wood-warm hover:bg-amber-400 text-wood-dark font-bold text-xs sm:text-sm px-8 py-3.5 rounded-full transition-all"
             >
               Get Workshop Directions

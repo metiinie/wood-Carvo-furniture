@@ -33,12 +33,12 @@ export async function generateMetadata({ params: { locale, slug } }: ProductPage
       product.description ||
       `Handcrafted ${product.name} by WOOD CARVO furniture workshop in Addis Ababa, Ethiopia.`,
     alternates: {
-      canonical: `${siteUrl}/${locale}/products/${slug}`,
+      canonical: `${siteUrl}/products/${slug}`,
     },
     openGraph: {
       title: product.name,
       description: product.description || "Handcrafted furniture piece by WOOD CARVO.",
-      url: `${siteUrl}/${locale}/products/${slug}`,
+      url: `${siteUrl}/products/${slug}`,
       images: ogImg ? [{ url: ogImg, width: 1200, height: 630, alt: product.name }] : [],
     },
   };
@@ -106,7 +106,7 @@ export default async function ProductDetailPage({ params: { locale, slug } }: Pr
     },
     offers: {
       "@type": "Offer",
-      url: `${siteUrl}/${locale}/products/${slug}`,
+      url: `${siteUrl}/products/${slug}`,
       priceCurrency: "ETB",
       price: product.price_etb || undefined,
       availability:
@@ -133,18 +133,18 @@ export default async function ProductDetailPage({ params: { locale, slug } }: Pr
       <main className="flex-1 py-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         {/* Breadcrumb Trail */}
         <nav aria-label="Breadcrumb" className="mb-6 flex items-center text-xs text-wood-dark/60">
-          <Link href={`/${locale}`} className="hover:text-wood-dark transition-colors">
+          <Link href="/" className="hover:text-wood-dark transition-colors">
             Home
           </Link>
           <ChevronRight className="w-3.5 h-3.5 mx-2 text-wood-dark/40" />
-          <Link href={`/${locale}/products`} className="hover:text-wood-dark transition-colors">
+          <Link href="/products" className="hover:text-wood-dark transition-colors">
             Furniture
           </Link>
           {product.category && (
             <>
               <ChevronRight className="w-3.5 h-3.5 mx-2 text-wood-dark/40" />
               <Link
-                href={`/${locale}/products?category=${product.category.slug}`}
+                href={`/products?category=${product.category.slug}`}
                 className="hover:text-wood-dark transition-colors"
               >
                 {product.category.name}
@@ -290,7 +290,7 @@ export default async function ProductDetailPage({ params: { locale, slug } }: Pr
               </div>
               {product.category && (
                 <Link
-                  href={`/${locale}/products?category=${product.category.slug}`}
+                  href={`/products?category=${product.category.slug}`}
                   className="text-xs font-semibold text-wood-walnut hover:underline"
                 >
                   View full {product.category.name} collection

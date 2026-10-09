@@ -16,12 +16,12 @@ export async function generateMetadata({ params: { locale } }: CustomFurniturePa
     title: `${t("title")} | WOOD CARVO — Addis Ababa Workshop`,
     description: t("subtitle"),
     alternates: {
-      canonical: `${siteUrl}/${locale}/custom-furniture`,
+      canonical: `${siteUrl}/custom-furniture`,
     },
     openGraph: {
       title: `${t("title")} | WOOD CARVO`,
       description: t("subtitle"),
-      url: `${siteUrl}/${locale}/custom-furniture`,
+      url: `${siteUrl}/custom-furniture`,
     },
   };
 }

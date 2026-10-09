@@ -16,12 +16,12 @@ export async function generateMetadata({ params: { locale } }: ContactPageProps)
     title: `${t("title")} | WOOD CARVO — Addis Ababa Workshop`,
     description: t("subtitle"),
     alternates: {
-      canonical: `${siteUrl}/${locale}/contact`,
+      canonical: `${siteUrl}/contact`,
     },
     openGraph: {
       title: `${t("title")} | WOOD CARVO`,
       description: t("subtitle"),
-      url: `${siteUrl}/${locale}/contact`,
+      url: `${siteUrl}/contact`,
     },
   };
 }

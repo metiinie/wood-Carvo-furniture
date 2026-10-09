@@ -24,12 +24,12 @@ export async function generateMetadata({ params: { locale } }: ProductsPageProps
     title: `${t("title")} | WOOD CARVO — Bespoke Furniture Addis Ababa`,
     description: t("subtitle"),
     alternates: {
-      canonical: `${siteUrl}/${locale}/products`,
+      canonical: `${siteUrl}/products`,
     },
     openGraph: {
       title: `${t("title")} | WOOD CARVO`,
       description: t("subtitle"),
-      url: `${siteUrl}/${locale}/products`,
+      url: `${siteUrl}/products`,
     },
   };
 }
@@ -81,7 +81,7 @@ export default async function ProductsPage({ params: { locale }, searchParams }:
           {/* Search Form */}
           <form
             method="GET"
-            action={`/${locale}/products`}
+            action="/products"
             className="mt-6 max-w-xl flex items-center bg-white rounded-2xl border border-wood-walnut/20 shadow-sm p-1.5 focus-within:ring-2 focus-within:ring-wood-warm"
           >
             {activeCategory && <input type="hidden" name="category" value={activeCategory} />}
@@ -109,7 +109,7 @@ export default async function ProductsPage({ params: { locale }, searchParams }:
           {/* Categories Pill Bar */}
           <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
             <Link
-              href={`/${locale}/products?${new URLSearchParams({
+              href={`/products?${new URLSearchParams({
                 ...(activeAvailability ? { availability: activeAvailability } : {}),
                 ...(activeSort ? { sort: activeSort } : {}),
                 ...(searchQuery ? { q: searchQuery } : {}),
@@ -125,7 +125,7 @@ export default async function ProductsPage({ params: { locale }, searchParams }:
             {categories.map((cat) => (
               <Link
                 key={cat.id}
-                href={`/${locale}/products?${new URLSearchParams({
+                href={`/products?${new URLSearchParams({
                   category: cat.slug,
                   ...(activeAvailability ? { availability: activeAvailability } : {}),
                   ...(activeSort ? { sort: activeSort } : {}),
@@ -153,7 +153,7 @@ export default async function ProductsPage({ params: { locale }, searchParams }:
               {availabilityOptions.map((opt) => (
                 <Link
                   key={opt.value}
-                  href={`/${locale}/products?${new URLSearchParams({
+                  href={`/products?${new URLSearchParams({
                     ...(activeCategory ? { category: activeCategory } : {}),
                     ...(opt.value ? { availability: opt.value } : {}),
                     ...(activeSort ? { sort: activeSort } : {}),
@@ -174,7 +174,7 @@ export default async function ProductsPage({ params: { locale }, searchParams }:
             <div className="flex items-center gap-2 text-xs">
               <span className="text-wood-dark/60">Sort:</span>
               <Link
-                href={`/${locale}/products?${new URLSearchParams({
+                href={`/products?${new URLSearchParams({
                   ...(activeCategory ? { category: activeCategory } : {}),
                   ...(activeAvailability ? { availability: activeAvailability } : {}),
                   sort: "newest",
@@ -188,7 +188,7 @@ export default async function ProductsPage({ params: { locale }, searchParams }:
               </Link>
               <span className="text-wood-dark/30">•</span>
               <Link
-                href={`/${locale}/products?${new URLSearchParams({
+                href={`/products?${new URLSearchParams({
                   ...(activeCategory ? { category: activeCategory } : {}),
                   ...(activeAvailability ? { availability: activeAvailability } : {}),
                   sort: "featured",
@@ -209,7 +209,7 @@ export default async function ProductsPage({ params: { locale }, searchParams }:
           <span>Showing {productsData.results.length} piece{productsData.results.length === 1 ? "" : "s"}</span>
           {(activeCategory || activeAvailability || searchQuery) && (
             <Link
-              href={`/${locale}/products`}
+              href="/products"
               className="text-wood-walnut hover:underline font-semibold"
             >
               Reset filters
@@ -238,14 +238,14 @@ export default async function ProductsPage({ params: { locale }, searchParams }:
             </p>
             <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
               <Link
-                href={`/${locale}/custom-furniture`}
+                href="/custom-furniture"
                 className="bg-wood-dark hover:bg-wood-walnut text-wood-warm text-xs font-semibold px-6 py-3 rounded-full shadow-sm transition-all inline-flex items-center gap-2"
               >
                 <Sparkles className="w-4 h-4" />
                 <span>Request Custom Order</span>
               </Link>
               <Link
-                href={`/${locale}/products`}
+                href="/products"
                 className="border border-wood-walnut/30 text-wood-dark hover:bg-wood-walnut/10 text-xs font-semibold px-6 py-3 rounded-full transition-all"
               >
                 Clear all filters

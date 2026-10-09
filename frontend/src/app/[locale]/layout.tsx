@@ -40,17 +40,17 @@ export async function generateMetadata({
     description:
       "Handcrafted living, dining, and bedroom furniture in Addis Ababa, Ethiopia. Custom orders made from indigenous hardwoods.",
     alternates: {
-      canonical: `${siteUrl}/${locale}`,
+      canonical: siteUrl,
       languages: {
-        en: `${siteUrl}/en`,
-        am: `${siteUrl}/am`,
-        om: `${siteUrl}/om`,
+        en: siteUrl,
+        am: siteUrl,
+        om: siteUrl,
       },
     },
     openGraph: {
       type: "website",
       locale: locale === "am" ? "am_ET" : locale === "om" ? "om_ET" : "en_US",
-      url: `${siteUrl}/${locale}`,
+      url: siteUrl,
       siteName: "WOOD CARVO",
     },
   };
