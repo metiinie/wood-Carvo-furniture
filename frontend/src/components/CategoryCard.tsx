@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import { useLocale } from "next-intl";
 import { Category } from "@/lib/api";
 import { ArrowUpRight } from "lucide-react";
 
@@ -9,11 +8,9 @@ interface CategoryCardProps {
 }
 
 export default function CategoryCard({ category }: CategoryCardProps) {
-  const locale = useLocale();
-
   return (
     <Link
-      href={`/${locale}/products?category=${category.slug}`}
+      href={`/products?category=${category.slug}`}
       className="group relative flex flex-col justify-end p-6 rounded-3xl overflow-hidden aspect-[4/3] bg-wood-surface border border-wood-walnut/20 shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
     >
       {/* Background Image */}

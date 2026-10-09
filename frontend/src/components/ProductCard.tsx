@@ -9,7 +9,6 @@ interface ProductCardProps {
 
 export default function ProductCard({ product }: ProductCardProps) {
   const t = useTranslations("products");
-  const locale = useLocale();
 
   const primaryPhoto =
     product.primary_image?.image ||
@@ -44,7 +43,7 @@ export default function ProductCard({ product }: ProductCardProps) {
     <article className="group flex flex-col bg-white rounded-2xl overflow-hidden border border-wood-walnut/15 shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
       {/* Product Image */}
       <Link
-        href={`/${locale}/products/${product.slug}`}
+        href={`/products/${product.slug}`}
         className="relative block aspect-[4/3] w-full bg-wood-surface overflow-hidden"
       >
         {primaryPhoto ? (
@@ -88,7 +87,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 
           {/* Title */}
           <h3 className="font-serif font-bold text-wood-dark text-lg sm:text-xl group-hover:text-wood-walnut transition-colors line-clamp-1">
-            <Link href={`/${locale}/products/${product.slug}`}>{product.name}</Link>
+            <Link href={`/products/${product.slug}`}>{product.name}</Link>
           </h3>
 
           {/* Material & Specs */}
@@ -111,7 +110,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           </div>
 
           <Link
-            href={`/${locale}/products/${product.slug}`}
+            href={`/products/${product.slug}`}
             className="inline-flex items-center text-xs font-semibold px-4 py-2 rounded-full bg-wood-dark hover:bg-wood-walnut text-wood-warm shadow-sm transition-all"
           >
             View

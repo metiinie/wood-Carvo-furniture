@@ -5,7 +5,6 @@ import Logo from "./Logo";
 export default function Footer() {
   const t = useTranslations("common");
   const tNav = useTranslations("nav");
-  const locale = useLocale();
   const currentYear = new Date().getFullYear();
 
   return (
@@ -29,22 +28,22 @@ export default function Footer() {
             </h4>
             <ul className="space-y-2 text-sm text-wood-cream/80">
               <li>
-                <Link href={`/${locale}/products`} className="hover:text-wood-warm transition-colors">
+                <Link href="/products" className="hover:text-wood-warm transition-colors">
                   {tNav("products")}
                 </Link>
               </li>
               <li>
-                <Link href={`/${locale}/categories`} className="hover:text-wood-warm transition-colors">
+                <Link href="/categories" className="hover:text-wood-warm transition-colors">
                   {tNav("categories")}
                 </Link>
               </li>
               <li>
-                <Link href={`/${locale}/custom-furniture`} className="hover:text-wood-warm transition-colors">
+                <Link href="/custom-furniture" className="hover:text-wood-warm transition-colors">
                   {tNav("custom")}
                 </Link>
               </li>
               <li>
-                <Link href={`/${locale}/gallery`} className="hover:text-wood-warm transition-colors">
+                <Link href="/gallery" className="hover:text-wood-warm transition-colors">
                   {tNav("gallery")}
                 </Link>
               </li>
@@ -82,7 +81,7 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <Link href={`/${locale}/contact`} className="hover:text-wood-warm transition-colors">
+                <Link href="/contact" className="hover:text-wood-warm transition-colors">
                   Workshop Map & Hours
                 </Link>
               </li>

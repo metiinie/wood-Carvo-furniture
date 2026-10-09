@@ -24,8 +24,42 @@ export default async function HomePage({
 
   const featuredProducts = productsData.results.slice(0, 6);
 
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://woodcarvo.com";
+  const localBusinessJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FurnitureStore",
+    name: "WOOD CARVO",
+    description: "Bespoke furniture workshop in Addis Ababa, Ethiopia. Handcrafted solid hardwood dining tables, sofas, and bedroom suites.",
+    url: `${siteUrl}/${locale}`,
+    telephone: settings?.phone_number || "+251911223344",
+    priceRange: "ETB",
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: settings?.address || "Bole Sub-city",
+      addressLocality: "Addis Ababa",
+      addressCountry: "ET",
+    },
+    geo: {
+      "@type": "GeoCoordinates",
+      latitude: settings?.latitude || 9.0105,
+      longitude: settings?.longitude || 38.7612,
+    },
+    openingHoursSpecification: [
+      {
+        "@type": "OpeningHoursSpecification",
+        dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+        opens: "08:30",
+        closes: "18:00",
+      },
+    ],
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd) }}
+      />
       <Header />
 
       <main className="flex-1">

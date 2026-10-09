@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import Header from "@/components/Header";
@@ -13,6 +14,23 @@ interface ProductsPageProps {
     availability?: string;
     sort?: "newest" | "featured";
     q?: string;
+  };
+}
+
+export async function generateMetadata({ params: { locale } }: ProductsPageProps): Promise<Metadata> {
+  const t = await getTranslations({ locale, namespace: "products" });
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://woodcarvo.com";
+  return {
+    title: `${t("title")} | WOOD CARVO — Bespoke Furniture Addis Ababa`,
+    description: t("subtitle"),
+    alternates: {
+      canonical: `${siteUrl}/${locale}/products`,
+    },
+    openGraph: {
+      title: `${t("title")} | WOOD CARVO`,
+      description: t("subtitle"),
+      url: `${siteUrl}/${locale}/products`,
+    },
   };
 }
 

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -6,6 +7,23 @@ import { Sparkles, MessageSquare, Send, CheckCircle2, Ruler, TreePine, Hammer, T
 
 interface CustomFurniturePageProps {
   params: { locale: string };
+}
+
+export async function generateMetadata({ params: { locale } }: CustomFurniturePageProps): Promise<Metadata> {
+  const t = await getTranslations({ locale, namespace: "custom" });
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://woodcarvo.com";
+  return {
+    title: `${t("title")} | WOOD CARVO — Addis Ababa Workshop`,
+    description: t("subtitle"),
+    alternates: {
+      canonical: `${siteUrl}/${locale}/custom-furniture`,
+    },
+    openGraph: {
+      title: `${t("title")} | WOOD CARVO`,
+      description: t("subtitle"),
+      url: `${siteUrl}/${locale}/custom-furniture`,
+    },
+  };
 }
 
 export default async function CustomFurniturePage({ params: { locale } }: CustomFurniturePageProps) {

@@ -10,22 +10,21 @@ import LanguageSwitcher from "./LanguageSwitcher";
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const t = useTranslations("nav");
-  const locale = useLocale();
 
   const navLinks = [
-    { href: `/${locale}/products`, label: t("products") },
-    { href: `/${locale}/categories`, label: t("categories") },
-    { href: `/${locale}/custom-furniture`, label: t("custom") },
-    { href: `/${locale}/gallery`, label: t("gallery") },
-    { href: `/${locale}/about`, label: t("about") },
-    { href: `/${locale}/contact`, label: t("contact") },
+    { href: "/products", label: t("products") },
+    { href: "/categories", label: t("categories") },
+    { href: "/custom-furniture", label: t("custom") },
+    { href: "/gallery", label: t("gallery") },
+    { href: "/about", label: t("about") },
+    { href: "/contact", label: t("contact") },
   ];
 
   return (
     <header className="sticky top-0 z-50 bg-wood-cream/95 backdrop-blur-md border-b border-wood-walnut/15 transition-all">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
         <Link
-          href={`/${locale}`}
+          href="/"
           className="flex items-center gap-2"
           aria-label="WOOD CARVO Home"
           onClick={() => setMobileMenuOpen(false)}

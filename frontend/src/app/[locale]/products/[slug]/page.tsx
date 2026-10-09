@@ -91,8 +91,43 @@ export default async function ProductDetailPage({ params: { locale, slug } }: Pr
     }
   };
 
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://woodcarvo.com";
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.name,
+    image: product.images?.map((img) => img.image) || [],
+    description: product.description || `Handcrafted ${product.name} by WOOD CARVO in Addis Ababa.`,
+    sku: product.code || undefined,
+    mpn: product.code || undefined,
+    brand: {
+      "@type": "Brand",
+      name: "WOOD CARVO",
+    },
+    offers: {
+      "@type": "Offer",
+      url: `${siteUrl}/${locale}/products/${slug}`,
+      priceCurrency: "ETB",
+      price: product.price_etb || undefined,
+      availability:
+        product.availability === "READY"
+          ? "https://schema.org/InStock"
+          : product.availability === "MADE_TO_ORDER"
+          ? "https://schema.org/PreOrder"
+          : "https://schema.org/SoldOut",
+      seller: {
+        "@type": "Organization",
+        name: "WOOD CARVO",
+      },
+    },
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <Header />
 
       <main className="flex-1 py-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">

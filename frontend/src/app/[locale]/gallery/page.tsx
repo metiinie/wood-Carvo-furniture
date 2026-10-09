@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -6,6 +7,23 @@ import { getGalleryItems, getCategories } from "@/lib/api";
 
 interface GalleryPageProps {
   params: { locale: string };
+}
+
+export async function generateMetadata({ params: { locale } }: GalleryPageProps): Promise<Metadata> {
+  const tNav = await getTranslations({ locale, namespace: "nav" });
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://woodcarvo.com";
+  return {
+    title: `${tNav("gallery")} | WOOD CARVO — Workshop Portfolio Addis Ababa`,
+    description: "Visual portfolio of custom hardwood furniture, timber grains, joinery details, and finished workshop pieces in Addis Ababa.",
+    alternates: {
+      canonical: `${siteUrl}/${locale}/gallery`,
+    },
+    openGraph: {
+      title: `${tNav("gallery")} | WOOD CARVO`,
+      description: "Portfolio of handcrafted furniture pieces by WOOD CARVO.",
+      url: `${siteUrl}/${locale}/gallery`,
+    },
+  };
 }
 
 export default async function GalleryPage({ params: { locale } }: GalleryPageProps) {

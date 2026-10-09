@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
@@ -8,6 +9,23 @@ import { ShieldCheck, HeartHandshake, Sparkles, Award } from "lucide-react";
 
 interface AboutPageProps {
   params: { locale: string };
+}
+
+export async function generateMetadata({ params: { locale } }: AboutPageProps): Promise<Metadata> {
+  const tNav = await getTranslations({ locale, namespace: "nav" });
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://woodcarvo.com";
+  return {
+    title: `${tNav("about")} | WOOD CARVO — Addis Ababa Workshop`,
+    description: "Learn about the WOOD CARVO furniture workshop in Addis Ababa, Ethiopia. Kiln-dried hardwoods, master artisanal joinery, and heirloom craftsmanship.",
+    alternates: {
+      canonical: `${siteUrl}/${locale}/about`,
+    },
+    openGraph: {
+      title: `${tNav("about")} | WOOD CARVO`,
+      description: "Our story, artisans, and timber standards at WOOD CARVO.",
+      url: `${siteUrl}/${locale}/about`,
+    },
+  };
 }
 
 export default async function AboutPage({ params: { locale } }: AboutPageProps) {
