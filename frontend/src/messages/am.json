@@ -21,11 +21,16 @@
   },
   "nav": {
     "home": "ዋና ገጽ",
-    "products": "የቤት እቃዎች",
-    "categories": "ምድቦች",
-    "gallery": "የቀደሙ ስራዎች",
-    "custom": "በትእዛዝ",
-    "about": "ስለ አውደ ጥናቱ",
+    "showroom": "ማሳያ ክፍል",
+    "allProducts": "ሁሉም የቤት እቃዎች",
+    "allProductsDesc": "ሙሉውን የእቃ ዝርዝር በዋጋና በምርጫ ይመልከቱ",
+    "livingSpaces": "የክፍል አይነቶች",
+    "livingSpacesDesc": "ለሳሎን፣ መኝታ እና መመገቢያ የተዘጋጁ ስራዎች",
+    "products": "ማሳያ ክፍል",
+    "categories": "የክፍል አይነቶች",
+    "gallery": "ጋለሪ",
+    "custom": "በትእዛዝ ማሰራት",
+    "about": "ታሪካችን",
     "contact": "ያግኙን"
   },
   "home": {

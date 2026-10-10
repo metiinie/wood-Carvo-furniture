@@ -21,11 +21,16 @@
   },
   "nav": {
     "home": "Home",
-    "products": "Furniture",
-    "categories": "Categories",
-    "gallery": "Portfolio",
-    "custom": "Bespoke Order",
-    "about": "Workshop",
+    "showroom": "Showroom",
+    "allProducts": "All Furniture",
+    "allProductsDesc": "Browse our full handcrafted catalog with filters & pricing",
+    "livingSpaces": "Living Spaces",
+    "livingSpacesDesc": "Explore collections curated by room and setting",
+    "products": "Showroom",
+    "categories": "Living Spaces",
+    "gallery": "Gallery",
+    "custom": "Custom Made",
+    "about": "Our Story",
     "contact": "Contact"
   },
   "home": {

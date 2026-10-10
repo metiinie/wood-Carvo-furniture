@@ -21,11 +21,16 @@
   },
   "nav": {
     "home": "Fuula Duraa",
-    "products": "Meeshaalee Manaa",
-    "categories": "Ramaddiiwwan",
-    "gallery": "Hojiiwwan Darban",
-    "custom": "Ajajaan Oomishuu",
-    "about": "Waa'ee Godambaa",
+    "showroom": "Agarsiisa",
+    "allProducts": "Meeshaalee Hunda",
+    "allProductsDesc": "Tarree meeshaalee guutuu daawwadhaa",
+    "livingSpaces": "Kutaa Manaatiin",
+    "livingSpacesDesc": "Meeshaalee kutaalee manaatiin qoodaman",
+    "products": "Agarsiisa",
+    "categories": "Kutaa Manaatiin",
+    "gallery": "Gaalarii",
+    "custom": "Ajajaan Tolchuu",
+    "about": "Seenaa Keenya",
     "contact": "Nu Qunnamaa"
   },
   "home": {

@@ -47,6 +47,11 @@ export default function Footer() {
                   {tNav("gallery")}
                 </Link>
               </li>
+              <li>
+                <Link href="/about" className="hover:text-wood-warm transition-colors">
+                  {tNav("about")}
+                </Link>
+              </li>
             </ul>
           </div>
 
